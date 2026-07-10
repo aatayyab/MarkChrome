@@ -1,26 +1,1161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MarkChrome Help</title>
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-  <style>
-    :root{--ink:#111a2a;--muted:#5b6d82;--blue:#0b66d8;--teal:#10b9a7;--line:#dbe9f7;--soft:#f5fbff;--dark:#061d33}
-    *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:linear-gradient(135deg,#fbfdff,#f2fffc);line-height:1.65}.wrap{width:min(920px,calc(100% - 44px));margin:0 auto}.top{padding:28px 0;border-bottom:1px solid var(--line);background:#fff}.brand{display:flex;align-items:center;gap:12px;font-weight:900;font-size:22px}.brand img{width:44px}.brand b{color:var(--blue)}main{padding:54px 0}.card{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:0 18px 45px rgba(9,34,60,.08);padding:34px;margin-bottom:22px}h1{font-size:42px;line-height:1.1;letter-spacing:-.04em;margin:0 0 12px}h2{font-size:24px;margin:8px 0 12px}.lead{color:var(--muted);font-size:18px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.mini{border:1px solid var(--line);border-radius:14px;padding:18px;background:var(--soft)}kbd{background:#fff;border:1px solid #bfd2e5;border-bottom-width:3px;border-radius:7px;padding:3px 8px;font-family:Consolas,monospace;font-weight:700}.btn{display:inline-flex;background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;text-decoration:none;border-radius:999px;padding:11px 18px;font-weight:900;margin-right:10px}a{color:var(--blue);font-weight:800}@media(max-width:760px){.grid{grid-template-columns:1fr}h1{font-size:34px}}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MarkChrome — Help &amp; User Guide</title>
+<style>
+    /* ── TOKENS ─────────────────────────────────────────────── */
+    :root {
+        --navy:      #1e2330;
+        --panel:     #2a3145;
+        --hover:     #323a52;
+        --accent:    #4f8ef7;
+        --green:     #2ecc71;
+        --orange:    #e67e22;
+        --purple:    #9b59b6;
+        --text:      #c9d1e0;
+        --text-dim:  #7a869a;
+        --text-bright:#e8edf5;
+        --border:    #1a1f2e;
+        --white:     #ffffff;
+        --sidebar-w: 240px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        background: var(--navy);
+        color: var(--text);
+        line-height: 1.7;
+        font-size: 15px;
+    }
+
+    /* ── LAYOUT ──────────────────────────────────────────────── */
+    .layout {
+        display: flex;
+        min-height: 100vh;
+    }
+
+    /* ── SIDEBAR ─────────────────────────────────────────────── */
+    .sidebar {
+        width: var(--sidebar-w);
+        background: var(--panel);
+        border-right: 1px solid var(--border);
+        position: fixed;
+        top: 0; left: 0; bottom: 0;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        z-index: 10;
+    }
+
+    .sidebar-logo {
+        padding: 22px 20px 16px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-logo .app-name {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: var(--accent);
+        letter-spacing: 0.02em;
+    }
+
+    .sidebar-logo .app-sub {
+        font-size: 0.72rem;
+        color: var(--text-dim);
+        margin-top: 2px;
+    }
+
+    .nav-section {
+        padding: 14px 0 4px;
+    }
+
+    .nav-label {
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--text-dim);
+        padding: 0 20px 6px;
+    }
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 20px;
+        font-size: 0.82rem;
+        color: var(--text);
+        text-decoration: none;
+        border-left: 2px solid transparent;
+        transition: background 0.12s, border-color 0.12s, color 0.12s;
+        cursor: pointer;
+    }
+
+    .nav-link:hover {
+        background: var(--hover);
+        color: var(--text-bright);
+    }
+
+    .nav-link.active {
+        border-left-color: var(--accent);
+        color: var(--accent);
+        background: rgba(79,142,247,0.08);
+    }
+
+    .nav-icon { font-size: 0.9rem; flex-shrink: 0; }
+
+    .sidebar-footer {
+        margin-top: auto;
+        padding: 16px 20px;
+        border-top: 1px solid var(--border);
+        font-size: 0.7rem;
+        color: var(--text-dim);
+    }
+
+    /* ── MAIN CONTENT ────────────────────────────────────────── */
+    .main {
+        margin-left: var(--sidebar-w);
+        flex: 1;
+        padding: 0;
+    }
+
+    /* ── HERO ────────────────────────────────────────────────── */
+    .hero {
+        background: linear-gradient(135deg, #1e2330 0%, #2a3145 60%, #1e2a3a 100%);
+        border-bottom: 1px solid var(--border);
+        padding: 60px 56px 48px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: -60px; right: -60px;
+        width: 320px; height: 320px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(79,142,247,0.12) 0%, transparent 70%);
+        pointer-events: none;
+    }
+
+    .hero-eyebrow {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 10px;
+    }
+
+    .hero h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: var(--text-bright);
+        line-height: 1.2;
+        margin-bottom: 14px;
+    }
+
+    .hero p {
+        font-size: 1rem;
+        color: var(--text);
+        max-width: 560px;
+        line-height: 1.6;
+    }
+
+    .hero-badges {
+        display: flex;
+        gap: 8px;
+        margin-top: 22px;
+        flex-wrap: wrap;
+    }
+
+    .badge {
+        background: rgba(79,142,247,0.15);
+        border: 1px solid rgba(79,142,247,0.3);
+        color: var(--accent);
+        font-size: 0.72rem;
+        font-weight: 600;
+        padding: 4px 11px;
+        border-radius: 20px;
+    }
+
+    /* ── CONTENT SECTIONS ────────────────────────────────────── */
+    .content {
+        padding: 48px 56px;
+        max-width: 860px;
+    }
+
+    .section {
+        margin-bottom: 60px;
+        scroll-margin-top: 24px;
+    }
+
+    .section-eyebrow {
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 6px;
+    }
+
+    .section h2 {
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: var(--text-bright);
+        margin-bottom: 16px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .section h3 {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text-bright);
+        margin: 24px 0 8px;
+    }
+
+    .section p {
+        margin-bottom: 12px;
+        color: var(--text);
+    }
+
+    /* ── CALLOUT BOXES ───────────────────────────────────────── */
+    .callout {
+        border-radius: 8px;
+        padding: 14px 18px;
+        margin: 18px 0;
+        font-size: 0.88rem;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .callout-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+
+    .callout.tip {
+        background: rgba(46,204,113,0.1);
+        border: 1px solid rgba(46,204,113,0.25);
+        color: #a8e6c3;
+    }
+
+    .callout.note {
+        background: rgba(79,142,247,0.1);
+        border: 1px solid rgba(79,142,247,0.25);
+        color: #a8c8f8;
+    }
+
+    .callout.warning {
+        background: rgba(230,126,34,0.1);
+        border: 1px solid rgba(230,126,34,0.25);
+        color: #f0c49a;
+    }
+
+    /* ── INTERFACE DIAGRAM ───────────────────────────────────── */
+    .interface-diagram {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 20px 0;
+        font-size: 0.8rem;
+    }
+
+    .diag-bar {
+        background: var(--panel);
+        padding: 9px 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1px solid var(--border);
+        flex-wrap: wrap;
+    }
+
+    .diag-label {
+        background: var(--hover);
+        color: var(--text-dim);
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .diag-label.highlight {
+        background: rgba(79,142,247,0.2);
+        color: var(--accent);
+        border: 1px solid rgba(79,142,247,0.35);
+    }
+
+    .diag-panes {
+        display: flex;
+        height: 110px;
+    }
+
+    .diag-pane {
+        flex: 1;
+        padding: 12px 14px;
+        font-size: 0.75rem;
+        color: var(--text-dim);
+        font-family: monospace;
+        line-height: 1.6;
+    }
+
+    .diag-pane.editor-side {
+        background: #252b3b;
+        border-right: 1px solid var(--border);
+    }
+
+    .diag-pane.preview-side {
+        background: #fff;
+        color: #555;
+        font-family: sans-serif;
+    }
+
+    .diag-pane-label {
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+        opacity: 0.6;
+    }
+
+    .diag-pane.editor-side .diag-pane-label { color: #e06c75; }
+    .diag-pane.preview-side .diag-pane-label { color: #2ecc71; }
+
+    /* ── TOOLBAR REFERENCE TABLE ─────────────────────────────── */
+    .ref-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0;
+        font-size: 0.85rem;
+    }
+
+    .ref-table th {
+        background: var(--panel);
+        color: var(--text-dim);
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 9px 14px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .ref-table td {
+        padding: 9px 14px;
+        border-bottom: 1px solid rgba(255,255,255,0.04);
+        color: var(--text);
+        vertical-align: top;
+    }
+
+    .ref-table tr:last-child td { border-bottom: none; }
+
+    .ref-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+    .btn-pill {
+        display: inline-block;
+        background: var(--hover);
+        color: var(--text-bright);
+        font-size: 0.72rem;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 4px;
+        white-space: nowrap;
+    }
+
+    .kbd {
+        display: inline-block;
+        background: var(--panel);
+        border: 1px solid var(--hover);
+        border-bottom-width: 2px;
+        color: var(--text-bright);
+        font-family: monospace;
+        font-size: 0.75rem;
+        padding: 1px 7px;
+        border-radius: 4px;
+        white-space: nowrap;
+    }
+
+    .result-text {
+        color: var(--text-dim);
+        font-size: 0.82rem;
+    }
+
+    /* ── SHORTCUT GRID ───────────────────────────────────────── */
+    .shortcut-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin: 16px 0;
+    }
+
+    .shortcut-card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .shortcut-card .kbd-block {
+        display: flex;
+        gap: 4px;
+        flex-shrink: 0;
+    }
+
+    .shortcut-card .desc {
+        font-size: 0.83rem;
+        color: var(--text);
+    }
+
+    /* ── STEP LIST ───────────────────────────────────────────── */
+    .steps {
+        list-style: none;
+        margin: 16px 0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .steps li {
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+    }
+
+    .step-num {
+        background: var(--accent);
+        color: #fff;
+        font-size: 0.72rem;
+        font-weight: 800;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-top: 1px;
+    }
+
+    .step-body { font-size: 0.88rem; color: var(--text); }
+    .step-body strong { color: var(--text-bright); }
+
+    /* ── FAQ ─────────────────────────────────────────────────── */
+    .faq-item {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        margin-bottom: 10px;
+        overflow: hidden;
+    }
+
+    .faq-q {
+        padding: 14px 18px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--text-bright);
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--panel);
+        user-select: none;
+        transition: background 0.12s;
+    }
+
+    .faq-q:hover { background: var(--hover); }
+
+    .faq-q .chevron {
+        font-size: 0.7rem;
+        transition: transform 0.2s;
+        color: var(--text-dim);
+    }
+
+    .faq-item.open .chevron { transform: rotate(180deg); }
+
+    .faq-a {
+        display: none;
+        padding: 14px 18px;
+        font-size: 0.87rem;
+        color: var(--text);
+        background: rgba(0,0,0,0.15);
+        border-top: 1px solid var(--border);
+        line-height: 1.65;
+    }
+
+    .faq-item.open .faq-a { display: block; }
+
+    /* ── MARKDOWN CHEAT SHEET ────────────────────────────────── */
+    .cheat-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin: 16px 0;
+    }
+
+    .cheat-card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .cheat-card .cheat-md {
+        background: #252b3b;
+        padding: 10px 14px;
+        font-family: 'Courier New', monospace;
+        font-size: 0.8rem;
+        color: #abb2bf;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .cheat-card .cheat-result {
+        padding: 10px 14px;
+        font-size: 0.85rem;
+        color: var(--text);
+    }
+
+    .cheat-card .cheat-result strong { color: var(--text-bright); }
+    .cheat-card .cheat-result em { font-style: italic; }
+    .cheat-card .cheat-result del { text-decoration: line-through; color: var(--text-dim); }
+    .cheat-card .cheat-result mark { background: #fff3b0; color: #333; padding: 0 3px; border-radius: 2px; }
+    .cheat-card .cheat-result code { background: #1e2330; padding: 1px 5px; border-radius: 3px; font-family: monospace; font-size: 0.82em; }
+
+    /* ── RESPONSIVE ──────────────────────────────────────────── */
+    @media (max-width: 720px) {
+        .sidebar { display: none; }
+        .main { margin-left: 0; }
+        .hero, .content { padding: 30px 20px; }
+        .shortcut-grid, .cheat-grid { grid-template-columns: 1fr; }
+    }
+</style>
 </head>
 <body>
-  <header class="top"><div class="wrap"><a class="brand" href="index.html"><img src="assets/markchrome-icon.svg" alt=""><span>Mark<b>Chrome</b></span></a></div></header>
-  <main class="wrap">
-    <section class="card">
-      <h1>MarkChrome Help</h1>
-      <p class="lead">MarkChrome is a static browser-based Markdown editor. It is designed for writing, previewing, and saving normal .md files.</p>
-      <a class="btn" href="app.html">Launch Editor</a><a class="btn" href="downloads/MarkChrome.html" download>Download Standalone HTML</a>
-    </section>
-    <section class="card"><h2>Basic workflow</h2><ol><li>Open <b>Launch Editor</b>.</li><li>Write Markdown in the left pane.</li><li>Review the rendered preview on the right.</li><li>Use the toolbar for headings, links, images, tables, lists, quotes, rules, and code blocks.</li><li>Click <b>Save</b> or <b>Save As</b> to store your Markdown file.</li></ol></section>
-    <section class="card"><h2>Keyboard shortcuts</h2><div class="grid"><div class="mini"><kbd>Ctrl</kbd> + <kbd>S</kbd><br>Save file</div><div class="mini"><kbd>Ctrl</kbd> + <kbd>B</kbd><br>Bold text</div><div class="mini"><kbd>Ctrl</kbd> + <kbd>I</kbd><br>Italic text</div><div class="mini"><kbd>Ctrl</kbd> + <kbd>K</kbd><br>Insert link</div></div></section>
-    <section class="card"><h2>Recommended use</h2><p>Use MarkChrome for README files, technical notes, checklists, blog drafts, setup guides, project plans, and changelogs. Keep backups of important Markdown files in a synced folder or repository.</p></section>
-  </main>
+
+<div class="layout">
+
+<!-- ── SIDEBAR ──────────────────────────────────────────────── -->
+<aside class="sidebar">
+    <div class="sidebar-logo">
+        <div class="app-name">MarkChrome</div>
+        <div class="app-sub">User Guide</div>
+    </div>
+
+    <nav>
+        <div class="nav-section">
+            <div class="nav-label">Getting Started</div>
+            <a class="nav-link active" href="#overview"><span class="nav-icon">🏠</span> Overview</a>
+            <a class="nav-link" href="#interface"><span class="nav-icon">🖥️</span> The Interface</a>
+            <a class="nav-link" href="#first-document"><span class="nav-icon">✏️</span> Your First Document</a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-label">Using the Editor</div>
+            <a class="nav-link" href="#toolbar"><span class="nav-icon">🔧</span> Toolbar Buttons</a>
+            <a class="nav-link" href="#markdown"><span class="nav-icon">📝</span> Markdown Cheat Sheet</a>
+            <a class="nav-link" href="#shortcuts"><span class="nav-icon">⌨️</span> Keyboard Shortcuts</a>
+            <a class="nav-link" href="#tables"><span class="nav-icon">⊞</span> Working with Tables</a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-label">Files</div>
+            <a class="nav-link" href="#files"><span class="nav-icon">📁</span> Open, Save &amp; Export</a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-label">Help</div>
+            <a class="nav-link" href="#faq"><span class="nav-icon">❓</span> Common Questions</a>
+            <a class="nav-link" href="#tips"><span class="nav-icon">💡</span> Tips &amp; Tricks</a>
+        </div>
+    </nav>
+
+    <div class="sidebar-footer">MarkChrome &copy; 2025</div>
+</aside>
+
+<!-- ── MAIN ──────────────────────────────────────────────────── -->
+<main class="main">
+
+    <!-- HERO -->
+    <div class="hero">
+        <div class="hero-eyebrow">User Guide</div>
+        <h1>Welcome to MarkChrome</h1>
+        <p>MarkChrome is a two-pane writing tool. You type on the left and see a beautiful, formatted result on the right — instantly. No special knowledge required.</p>
+        <div class="hero-badges">
+            <span class="badge">No account needed</span>
+            <span class="badge">Works in your browser</span>
+            <span class="badge">Saves to your computer</span>
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- ── OVERVIEW ─────────────────────────────────────── -->
+        <div class="section" id="overview">
+            <div class="section-eyebrow">Getting Started</div>
+            <h2>What is MarkChrome?</h2>
+            <p>MarkChrome is a writing app for creating clean, well-formatted documents — things like notes, reports, README files, blog posts, or personal journals.</p>
+            <p>It uses a simple text format called <strong style="color:var(--text-bright)">Markdown</strong>. Markdown lets you add formatting (headings, bold text, lists) using plain characters like <code style="background:var(--panel);padding:1px 6px;border-radius:4px;font-size:0.85em;">#</code> and <code style="background:var(--panel);padding:1px 6px;border-radius:4px;font-size:0.85em;">**</code> — but you never have to type them by hand if you don't want to. The toolbar buttons do it for you.</p>
+
+            <div class="callout note">
+                <span class="callout-icon">ℹ️</span>
+                <div>You don't need to know Markdown to use MarkChrome. Click any toolbar button to insert formatting automatically, or type freely in the Preview pane on the right.</div>
+            </div>
+        </div>
+
+        <!-- ── INTERFACE ─────────────────────────────────────── -->
+        <div class="section" id="interface">
+            <div class="section-eyebrow">Getting Started</div>
+            <h2>The Interface</h2>
+            <p>The app has three main areas:</p>
+
+            <div class="interface-diagram">
+                <div class="diag-bar">
+                    <span class="diag-label highlight">H1</span>
+                    <span class="diag-label highlight">H2</span>
+                    <span class="diag-label highlight">Bold</span>
+                    <span class="diag-label highlight">Italic</span>
+                    <span class="diag-label highlight">🔗 Link</span>
+                    <span class="diag-label highlight">• List</span>
+                    <span class="diag-label highlight">Table</span>
+                    <span style="margin-left:auto;display:flex;gap:6px;">
+                        <span class="diag-label" style="background:#e67e22;color:#fff;">New</span>
+                        <span class="diag-label" style="background:#4f8ef7;color:#fff;">Open</span>
+                        <span class="diag-label" style="background:#2ecc71;color:#111;">Save</span>
+                    </span>
+                </div>
+                <div class="diag-panes">
+                    <div class="diag-pane editor-side">
+                        <div class="diag-pane-label">① Markdown Source</div>
+                        # My Heading<br>
+                        **Bold** and *italic*<br>
+                        - Item one<br>
+                        - Item two
+                    </div>
+                    <div class="diag-pane preview-side">
+                        <div class="diag-pane-label">② Rendered Preview</div>
+                        <span style="font-size:1.1em;font-weight:800;color:#111;">My Heading</span><br>
+                        <strong>Bold</strong> and <em>italic</em><br>
+                        • Item one<br>
+                        • Item two
+                    </div>
+                </div>
+            </div>
+
+            <h3>① Toolbar</h3>
+            <p>The dark bar at the top. Click any button here to insert formatting at your cursor — works in both panes.</p>
+
+            <h3>② Markdown Source (left pane)</h3>
+            <p>This is where you type your raw text. Formatting symbols like <code style="background:var(--panel);padding:1px 5px;border-radius:3px;font-size:0.85em;">**bold**</code> appear here. The left pane is always in sync with the right.</p>
+
+            <h3>③ Rendered Preview (right pane)</h3>
+            <p>This shows how your document looks when published or printed. You can also type and format directly here — it works like a regular word processor.</p>
+
+            <h3>④ Status Bar</h3>
+            <p>The thin bar at the very bottom shows your word count, line count, and cursor position — useful when writing to a length.</p>
+        </div>
+
+        <!-- ── FIRST DOCUMENT ─────────────────────────────────── -->
+        <div class="section" id="first-document">
+            <div class="section-eyebrow">Getting Started</div>
+            <h2>Writing Your First Document</h2>
+
+            <ul class="steps">
+                <li>
+                    <span class="step-num">1</span>
+                    <div class="step-body">Click <strong>New</strong> in the top-right to start with a blank page. If you have unsaved changes, the app will ask before clearing.</div>
+                </li>
+                <li>
+                    <span class="step-num">2</span>
+                    <div class="step-body">Click inside the <strong>left pane</strong> and start typing your content. You'll see it appear formatted in the right pane as you type.</div>
+                </li>
+                <li>
+                    <span class="step-num">3</span>
+                    <div class="step-body">Use the <strong>toolbar buttons</strong> to add a heading, bold text, a list, or anything else. Place your cursor first, then click the button.</div>
+                </li>
+                <li>
+                    <span class="step-num">4</span>
+                    <div class="step-body">Press <kbd class="kbd">Ctrl</kbd> + <kbd class="kbd">S</kbd> at any time to save your file. The first time, you'll choose where to save it on your computer.</div>
+                </li>
+            </ul>
+
+            <div class="callout tip">
+                <span class="callout-icon">✅</span>
+                <div>A small orange dot appears next to the filename at the top whenever you have unsaved changes. It disappears as soon as you save.</div>
+            </div>
+        </div>
+
+        <!-- ── TOOLBAR ────────────────────────────────────────── -->
+        <div class="section" id="toolbar">
+            <div class="section-eyebrow">Using the Editor</div>
+            <h2>Toolbar Buttons</h2>
+            <p>Every button inserts formatting at your cursor position. If you have text selected, it wraps that text. Here's what each button does:</p>
+
+            <table class="ref-table">
+                <thead>
+                    <tr>
+                        <th>Button</th>
+                        <th>What it does</th>
+                        <th>Example result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="btn-pill">H1</span></td>
+                        <td>Largest heading — use for your document title</td>
+                        <td><span class="result-text" style="font-size:1.1em;font-weight:800;color:var(--text-bright);">Big Title</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="btn-pill">H2</span></td>
+                        <td>Section heading</td>
+                        <td><span class="result-text" style="font-size:0.95em;font-weight:700;color:var(--text-bright);">Section Title</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="btn-pill">H3</span></td>
+                        <td>Sub-section heading</td>
+                        <td><span class="result-text" style="font-weight:700;color:var(--text-bright);">Sub-section</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="btn-pill"><b>B</b></span></td>
+                        <td>Bold — makes text stand out</td>
+                        <td><span class="result-text"><strong style="color:var(--text-bright);">important word</strong></span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="btn-pill"><i>I</i></span></td>
+                        <td>Italic — emphasis or titles</td>
+                        <td><span class="result-text"><em>subtle emphasis</em></span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="btn-pill"><s>S</s></span></td>
+                        <td>Strikethrough — crossed-out text</td>
+                        <td><span class="result-text" style="text-decoration:line-through;">old value</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="btn-pill">★</span></td>
+                        <td>Highlight — yellow background on text</td>
+                        <td><mark style="background:#fff3b0;padding:1px 4px;border-radius:3px;color:#333;">highlighted</mark></td>
+                    </tr>
+                    <tr>
+                        <td><span class="btn-pill">🔗 Link</span></td>
+                        <td>Insert a clickable link — a dialog will ask for the URL</td>
+                        <td><span class="result-text" style="color:var(--accent);text-decoration:underline;">Link text</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="btn-pill">🖼 Image</span></td>
+                        <td>Insert an image from a web address</td>
+                        <td><span class="result-text">[image displayed inline]</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="btn-pill">• List</span></td>
+                        <td>Bullet point list</td>
+                        <td><span class="result-text">• Item</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="btn-pill">1. List</span></td>
+                        <td>Numbered list</td>
+                        <td><span class="result-text">1. Item</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="btn-pill">☑ Task</span></td>
+                        <td>Checkbox task list — great for to-do items</td>
+                        <td><span class="result-text">☐ Task</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="btn-pill">⊞ Table</span></td>
+                        <td>Inserts a 3-column starter table you can edit</td>
+                        <td><span class="result-text">[3-column table]</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="btn-pill">" Quote</span></td>
+                        <td>Block quote — indented text with a left bar</td>
+                        <td><span class="result-text" style="border-left:3px solid var(--accent);padding-left:8px;display:inline-block;">quoted text</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="btn-pill">— HR</span></td>
+                        <td>Horizontal divider line between sections</td>
+                        <td><hr style="border:none;border-top:1px solid #555;margin:4px 0;width:80px;"></td>
+                    </tr>
+                    <tr>
+                        <td><span class="btn-pill">&#96;Code</span></td>
+                        <td>Inline code — for short commands or filenames</td>
+                        <td><code style="background:var(--panel);padding:1px 5px;border-radius:3px;font-size:0.85em;">filename.txt</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="btn-pill">&#96;&#96;&#96; Block</span></td>
+                        <td>Code block — for multi-line code samples</td>
+                        <td><span class="result-text">[dark code box]</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ── MARKDOWN CHEAT SHEET ───────────────────────────── -->
+        <div class="section" id="markdown">
+            <div class="section-eyebrow">Using the Editor</div>
+            <h2>Markdown Cheat Sheet</h2>
+            <p>If you prefer typing to clicking, here are the most useful Markdown shortcuts. Type these directly in the left pane — the preview updates instantly.</p>
+
+            <div class="cheat-grid">
+                <div class="cheat-card">
+                    <div class="cheat-md"># Heading 1</div>
+                    <div class="cheat-result"><span style="font-size:1.2em;font-weight:800;color:var(--text-bright);">Heading 1</span></div>
+                </div>
+                <div class="cheat-card">
+                    <div class="cheat-md">## Heading 2</div>
+                    <div class="cheat-result"><span style="font-size:1em;font-weight:700;color:var(--text-bright);">Heading 2</span></div>
+                </div>
+                <div class="cheat-card">
+                    <div class="cheat-md">**bold text**</div>
+                    <div class="cheat-result"><strong>bold text</strong></div>
+                </div>
+                <div class="cheat-card">
+                    <div class="cheat-md">*italic text*</div>
+                    <div class="cheat-result"><em>italic text</em></div>
+                </div>
+                <div class="cheat-card">
+                    <div class="cheat-md">~~strikethrough~~</div>
+                    <div class="cheat-result"><del>strikethrough</del></div>
+                </div>
+                <div class="cheat-card">
+                    <div class="cheat-md">==highlight==</div>
+                    <div class="cheat-result"><mark>highlight</mark></div>
+                </div>
+                <div class="cheat-card">
+                    <div class="cheat-md">- item one<br>- item two</div>
+                    <div class="cheat-result">• item one<br>• item two</div>
+                </div>
+                <div class="cheat-card">
+                    <div class="cheat-md">1. first<br>2. second</div>
+                    <div class="cheat-result">1. first<br>2. second</div>
+                </div>
+                <div class="cheat-card">
+                    <div class="cheat-md">- [ ] task<br>- [x] done</div>
+                    <div class="cheat-result">☐ task<br>☑ done</div>
+                </div>
+                <div class="cheat-card">
+                    <div class="cheat-md">&gt; a quoted passage</div>
+                    <div class="cheat-result" style="border-left:3px solid var(--accent);padding-left:10px;color:var(--text-dim);">a quoted passage</div>
+                </div>
+                <div class="cheat-card">
+                    <div class="cheat-md">`inline code`</div>
+                    <div class="cheat-result"><code>inline code</code></div>
+                </div>
+                <div class="cheat-card">
+                    <div class="cheat-md">---</div>
+                    <div class="cheat-result"><hr style="border:none;border-top:1px solid #666;margin:6px 0;"></div>
+                </div>
+            </div>
+
+            <h3>Links and Images</h3>
+            <div class="cheat-grid">
+                <div class="cheat-card">
+                    <div class="cheat-md">[link text](https://example.com)</div>
+                    <div class="cheat-result"><span style="color:var(--accent);text-decoration:underline;">link text</span></div>
+                </div>
+                <div class="cheat-card">
+                    <div class="cheat-md">![alt text](image-url.jpg)</div>
+                    <div class="cheat-result" style="color:var(--text-dim);">🖼 image displayed here</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── SHORTCUTS ──────────────────────────────────────── -->
+        <div class="section" id="shortcuts">
+            <div class="section-eyebrow">Using the Editor</div>
+            <h2>Keyboard Shortcuts</h2>
+            <p>These shortcuts work when the left (Markdown) pane is active. They're the fastest way to format without reaching for the mouse.</p>
+
+            <div class="shortcut-grid">
+                <div class="shortcut-card">
+                    <div class="kbd-block"><kbd class="kbd">Ctrl</kbd><kbd class="kbd">S</kbd></div>
+                    <div class="desc">Save the file</div>
+                </div>
+                <div class="shortcut-card">
+                    <div class="kbd-block"><kbd class="kbd">Ctrl</kbd><kbd class="kbd">B</kbd></div>
+                    <div class="desc">Bold selected text</div>
+                </div>
+                <div class="shortcut-card">
+                    <div class="kbd-block"><kbd class="kbd">Ctrl</kbd><kbd class="kbd">I</kbd></div>
+                    <div class="desc">Italic selected text</div>
+                </div>
+                <div class="shortcut-card">
+                    <div class="kbd-block"><kbd class="kbd">Ctrl</kbd><kbd class="kbd">K</kbd></div>
+                    <div class="desc">Insert a link</div>
+                </div>
+                <div class="shortcut-card">
+                    <div class="kbd-block"><kbd class="kbd">Ctrl</kbd><kbd class="kbd">`</kbd></div>
+                    <div class="desc">Inline code</div>
+                </div>
+                <div class="shortcut-card">
+                    <div class="kbd-block"><kbd class="kbd">Tab</kbd></div>
+                    <div class="desc">Indent (inserts 4 spaces)</div>
+                </div>
+            </div>
+
+            <div class="callout tip">
+                <span class="callout-icon">💡</span>
+                <div>On a Mac, use <kbd class="kbd">⌘</kbd> instead of <kbd class="kbd">Ctrl</kbd> for all shortcuts above.</div>
+            </div>
+        </div>
+
+        <!-- ── TABLES ────────────────────────────────────────── -->
+        <div class="section" id="tables">
+            <div class="section-eyebrow">Using the Editor</div>
+            <h2>Working with Tables</h2>
+            <p>Tables let you present information in rows and columns — perfect for comparisons, schedules, or any structured data. MarkChrome supports creating, editing, and formatting tables in both panes.</p>
+
+            <h3>Creating a table</h3>
+            <ul class="steps">
+                <li>
+                    <span class="step-num">1</span>
+                    <div class="step-body">Place your cursor where you want the table to appear — click inside either the left or right pane first.</div>
+                </li>
+                <li>
+                    <span class="step-num">2</span>
+                    <div class="step-body">Click the <span class="btn-pill">⊞ Table</span> button in the toolbar. A 3-column starter table is inserted immediately at your cursor position.</div>
+                </li>
+                <li>
+                    <span class="step-num">3</span>
+                    <div class="step-body">Click any cell in the <strong>Preview pane</strong> (right side) and type to replace the placeholder text. The Markdown source on the left updates automatically.</div>
+                </li>
+            </ul>
+
+            <div class="callout tip">
+                <span class="callout-icon">💡</span>
+                <div>The easiest way to edit table content is in the <strong>Preview pane</strong> — just click a cell and type, exactly like a spreadsheet.</div>
+            </div>
+
+            <h3>What a table looks like</h3>
+            <p>In the <strong>Markdown pane</strong> (left), a table is written using pipe characters (<code style="background:var(--panel);padding:1px 5px;border-radius:3px;font-size:0.85em;">|</code>) and dashes. In the <strong>Preview pane</strong> (right), it renders as a clean formatted table.</p>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;">
+                <div class="cheat-card">
+                    <div class="cheat-md" style="line-height:1.9;">
+                        | Name &nbsp;&nbsp;&nbsp;| Age | City &nbsp;&nbsp;&nbsp;&nbsp;|<br>
+                        |--------|-----|----------|<br>
+                        | Alice &nbsp;| 30 &nbsp;| London &nbsp;&nbsp;|<br>
+                        | Bob &nbsp;&nbsp;&nbsp;| 25 &nbsp;| New York |
+                    </div>
+                    <div class="cheat-result" style="font-size:0.75rem;color:var(--text-dim);padding:8px 14px;">← Markdown source (left pane)</div>
+                </div>
+                <div style="background:var(--panel);border:1px solid var(--border);border-radius:8px;overflow:hidden;">
+                    <table style="width:100%;border-collapse:collapse;font-size:0.82rem;">
+                        <thead>
+                            <tr style="background:var(--hover);">
+                                <th style="padding:8px 12px;text-align:left;color:var(--text-bright);border-bottom:1px solid var(--border);">Name</th>
+                                <th style="padding:8px 12px;text-align:left;color:var(--text-bright);border-bottom:1px solid var(--border);">Age</th>
+                                <th style="padding:8px 12px;text-align:left;color:var(--text-bright);border-bottom:1px solid var(--border);">City</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding:7px 12px;color:var(--text);border-bottom:1px solid rgba(255,255,255,0.04);">Alice</td>
+                                <td style="padding:7px 12px;color:var(--text);border-bottom:1px solid rgba(255,255,255,0.04);">30</td>
+                                <td style="padding:7px 12px;color:var(--text);border-bottom:1px solid rgba(255,255,255,0.04);">London</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:7px 12px;color:var(--text);">Bob</td>
+                                <td style="padding:7px 12px;color:var(--text);">25</td>
+                                <td style="padding:7px 12px;color:var(--text);">New York</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style="font-size:0.75rem;color:var(--text-dim);padding:8px 14px;">← Preview (right pane)</div>
+                </div>
+            </div>
+
+            <h3>Editing cell content</h3>
+            <p>You can edit a table from either pane:</p>
+            <table class="ref-table" style="margin-top:10px;">
+                <thead>
+                    <tr>
+                        <th>Where</th>
+                        <th>How to edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong style="color:var(--text-bright);">Preview pane</strong> (right)</td>
+                        <td>Click directly inside any cell and type. Changes sync to the Markdown source automatically. This is the easiest method.</td>
+                    </tr>
+                    <tr>
+                        <td><strong style="color:var(--text-bright);">Markdown pane</strong> (left)</td>
+                        <td>Find the row you want, locate the cell between the <code style="background:var(--panel);padding:1px 4px;border-radius:3px;font-size:0.82em;">|</code> pipes, and type your new value. Keep the pipes in place.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Adding more rows</h3>
+            <p>In the <strong>Markdown pane</strong>, go to the last row of your table and press <kbd class="kbd">Enter</kbd> to start a new line. Type a new row using the same pipe format:</p>
+            <div class="cheat-card" style="margin:12px 0;">
+                <div class="cheat-md">| Carol &nbsp;| 28 &nbsp;| Tokyo &nbsp;&nbsp;&nbsp;|</div>
+                <div class="cheat-result" style="color:var(--text-dim);font-size:0.82rem;">A new row appears in the preview instantly.</div>
+            </div>
+
+            <h3>Adding more columns</h3>
+            <p>In the <strong>Markdown pane</strong>, add a new column by inserting a <code style="background:var(--panel);padding:1px 5px;border-radius:3px;font-size:0.85em;">| New Column |</code> into the header row, the separator row (the dashes), and every data row. Keep all rows consistent — the same number of pipes on every line.</p>
+
+            <div class="callout note">
+                <span class="callout-icon">ℹ️</span>
+                <div>The separator row (the row with dashes like <code style="background:rgba(0,0,0,0.2);padding:1px 5px;border-radius:3px;">|---|---|---|</code>) tells MarkChrome that the row above it is the header. Don't delete it — the table won't render correctly without it.</div>
+            </div>
+
+            <h3>Deleting a row</h3>
+            <p>In the <strong>Markdown pane</strong>, select the entire line for that row (including the line break at the end) and delete it. The preview will update immediately.</p>
+
+            <h3>Deleting the entire table</h3>
+            <p>In the <strong>Markdown pane</strong>, select all the table lines — from the header row down to the last data row — and press <kbd class="kbd">Delete</kbd> or <kbd class="kbd">Backspace</kbd>.</p>
+
+            <div class="callout warning">
+                <span class="callout-icon">⚠️</span>
+                <div>Avoid adding line breaks <em>inside</em> a table cell. Each row must stay on a single line in the Markdown pane or the table will break. For longer text in a cell, keep it brief or use a list outside the table instead.</div>
+            </div>
+        </div>
+
+        <!-- ── FILES ─────────────────────────────────────────── -->
+        <div class="section" id="files">
+            <div class="section-eyebrow">Files</div>
+            <h2>Open, Save &amp; Export</h2>
+
+            <h3>Creating a new document</h3>
+            <p>Click <span class="btn-pill" style="background:#e67e22;">New</span> in the toolbar. If you have unsaved work, the app will warn you first.</p>
+
+            <h3>Opening an existing file</h3>
+            <p>Click <span class="btn-pill" style="background:#4f8ef7;">Open</span>. A file picker will appear — choose any <code style="background:var(--panel);padding:1px 5px;border-radius:3px;font-size:0.85em;">.md</code> or <code style="background:var(--panel);padding:1px 5px;border-radius:3px;font-size:0.85em;">.txt</code> file from your computer. The file loads instantly.</p>
+
+            <h3>Saving your work</h3>
+            <p>Click <span class="btn-pill" style="background:#2ecc71;color:#111;">Save</span> or press <kbd class="kbd">Ctrl</kbd>+<kbd class="kbd">S</kbd>. The first time you save a new document, a dialog will ask where to put it. After that, saving goes straight to the same file — no dialog needed.</p>
+
+            <h3>Saving a copy with a new name</h3>
+            <p>Click <span class="btn-pill" style="background:#9b59b6;">Save As…</span> to save your document to a different location or filename. Useful for creating a new version without overwriting the original.</p>
+
+            <div class="callout warning">
+                <span class="callout-icon">⚠️</span>
+                <div>MarkChrome saves files directly to your computer using your browser's File System access. This works best in <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong>. In other browsers, you may be prompted to download the file each time you save.</div>
+            </div>
+
+            <h3>What file format does it save in?</h3>
+            <p>Files are saved as plain <code style="background:var(--panel);padding:1px 5px;border-radius:3px;font-size:0.85em;">.md</code> (Markdown) files. These can be opened in any text editor (Notepad, VS Code, etc.) and are widely supported by publishing platforms, wikis, and note-taking apps.</p>
+        </div>
+
+        <!-- ── FAQ ───────────────────────────────────────────── -->
+        <div class="section" id="faq">
+            <div class="section-eyebrow">Help</div>
+            <h2>Common Questions</h2>
+
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    Why does the preview pane look different from the editor? <span class="chevron">▼</span>
+                </div>
+                <div class="faq-a">The left pane shows raw Markdown text (the symbols you type), and the right pane shows how that text renders into a formatted document. They always stay in sync — any change on one side immediately appears on the other.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    Can I type directly in the preview (right pane)? <span class="chevron">▼</span>
+                </div>
+                <div class="faq-a">Yes! Click anywhere in the right pane and type or paste text. The toolbar buttons also work there. Your changes will sync back to the Markdown source on the left automatically.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    I clicked H1 but the heading appeared at the bottom. What happened? <span class="chevron">▼</span>
+                </div>
+                <div class="faq-a">This can happen in the Preview pane if you click the toolbar button before clicking inside the preview to place your cursor. Click once inside the preview pane first to position your cursor, then click the toolbar button. In the Markdown pane (left side), headings always insert at the exact cursor position.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    How do I undo a change? <span class="chevron">▼</span>
+                </div>
+                <div class="faq-a">Press <kbd class="kbd">Ctrl</kbd>+<kbd class="kbd">Z</kbd> (or <kbd class="kbd">⌘</kbd>+<kbd class="kbd">Z</kbd> on Mac) as usual. The Markdown editor supports full undo history. In the preview pane, undo also works but may behave slightly differently depending on your browser.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    Will my document be saved automatically? <span class="chevron">▼</span>
+                </div>
+                <div class="faq-a">No — MarkChrome does not auto-save. Always press <kbd class="kbd">Ctrl</kbd>+<kbd class="kbd">S</kbd> regularly while working. An orange dot appears in the title bar whenever you have unsaved changes as a reminder.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    Can I use MarkChrome offline? <span class="chevron">▼</span>
+                </div>
+                <div class="faq-a">Yes. Once the HTML file is on your computer, MarkChrome works completely offline — no internet connection is needed. Just open the file in your browser.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    How do I insert an image? <span class="chevron">▼</span>
+                </div>
+                <div class="faq-a">Click the <strong>🖼 Image</strong> button in the toolbar. A small dialog will appear asking for an image URL (a web address ending in .jpg, .png, etc.) and optional alt text. MarkChrome does not upload images from your computer — the image must be hosted online.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    Can I print or export my document as a PDF? <span class="chevron">▼</span>
+                </div>
+                <div class="faq-a">Yes. Use your browser's built-in print feature (<kbd class="kbd">Ctrl</kbd>+<kbd class="kbd">P</kbd>) and select "Save as PDF" as the destination. The preview pane is what will print — so what you see on the right is what you get on paper.</div>
+            </div>
+        </div>
+
+        <!-- ── TIPS ───────────────────────────────────────────── -->
+        <div class="section" id="tips">
+            <div class="section-eyebrow">Help</div>
+            <h2>Tips &amp; Tricks</h2>
+
+            <h3>Select text before clicking toolbar buttons</h3>
+            <p>Highlight a word or phrase first, then click <strong>Bold</strong> or <strong>Italic</strong> — the formatting wraps your selection instead of inserting placeholder text.</p>
+
+            <h3>Use the status bar to track your writing</h3>
+            <p>The bottom bar shows a live word count. It's handy when writing to a specific length — a 500-word article, a 280-character summary, etc.</p>
+
+            <h3>Print from the preview pane</h3>
+            <p>Press <kbd class="kbd">Ctrl</kbd>+<kbd class="kbd">P</kbd> and your browser will print the formatted version — clean headings, tables, and all. The dark editor panel won't appear in the printout.</p>
+
+            <h3>Convert an existing paragraph to a heading</h3>
+            <p>In the Markdown pane, place your cursor on any line and click H1, H2, or H3 — the toolbar inserts the <code style="background:var(--panel);padding:1px 5px;border-radius:3px;font-size:0.85em;">#</code> symbol at the start of the line. You can also just type <code style="background:var(--panel);padding:1px 5px;border-radius:3px;font-size:0.85em;"># </code> yourself at the beginning of any line.</p>
+
+            <h3>Tables are editable in the preview</h3>
+            <p>After inserting a table with the toolbar button, click directly into any cell in the right pane and type to change the content. The Markdown source on the left updates automatically.</p>
+
+            <div class="callout tip">
+                <span class="callout-icon">💡</span>
+                <div>Use <strong>Save As…</strong> to create template files. Write your standard structure once, save it, and open a copy each time you start a new document.</div>
+            </div>
+        </div>
+
+    </div><!-- /content -->
+</main>
+</div><!-- /layout -->
+
+<script>
+    function toggleFaq(el) {
+        el.parentElement.classList.toggle('open');
+    }
+
+    // Highlight active nav link on scroll
+    const sections = document.querySelectorAll('.section[id]');
+    const navLinks  = document.querySelectorAll('.nav-link');
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                navLinks.forEach(l => l.classList.remove('active'));
+                const active = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+                if (active) active.classList.add('active');
+            }
+        });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+</script>
 </body>
 </html>
