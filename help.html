@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MarkChrome Help</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <style>
+    :root{--ink:#111a2a;--muted:#5b6d82;--blue:#0b66d8;--teal:#10b9a7;--line:#dbe9f7;--soft:#f5fbff;--dark:#061d33}
+    *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:linear-gradient(135deg,#fbfdff,#f2fffc);line-height:1.65}.wrap{width:min(920px,calc(100% - 44px));margin:0 auto}.top{padding:28px 0;border-bottom:1px solid var(--line);background:#fff}.brand{display:flex;align-items:center;gap:12px;font-weight:900;font-size:22px}.brand img{width:44px}.brand b{color:var(--blue)}main{padding:54px 0}.card{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:0 18px 45px rgba(9,34,60,.08);padding:34px;margin-bottom:22px}h1{font-size:42px;line-height:1.1;letter-spacing:-.04em;margin:0 0 12px}h2{font-size:24px;margin:8px 0 12px}.lead{color:var(--muted);font-size:18px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.mini{border:1px solid var(--line);border-radius:14px;padding:18px;background:var(--soft)}kbd{background:#fff;border:1px solid #bfd2e5;border-bottom-width:3px;border-radius:7px;padding:3px 8px;font-family:Consolas,monospace;font-weight:700}.btn{display:inline-flex;background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;text-decoration:none;border-radius:999px;padding:11px 18px;font-weight:900;margin-right:10px}a{color:var(--blue);font-weight:800}@media(max-width:760px){.grid{grid-template-columns:1fr}h1{font-size:34px}}
+  </style>
+</head>
+<body>
+  <header class="top"><div class="wrap"><a class="brand" href="index.html"><img src="assets/markchrome-icon.svg" alt=""><span>Mark<b>Chrome</b></span></a></div></header>
+  <main class="wrap">
+    <section class="card">
+      <h1>MarkChrome Help</h1>
+      <p class="lead">MarkChrome is a static browser-based Markdown editor. It is designed for writing, previewing, and saving normal .md files.</p>
+      <a class="btn" href="app.html">Launch Editor</a><a class="btn" href="downloads/MarkChrome.html" download>Download Standalone HTML</a>
+    </section>
+    <section class="card"><h2>Basic workflow</h2><ol><li>Open <b>Launch Editor</b>.</li><li>Write Markdown in the left pane.</li><li>Review the rendered preview on the right.</li><li>Use the toolbar for headings, links, images, tables, lists, quotes, rules, and code blocks.</li><li>Click <b>Save</b> or <b>Save As</b> to store your Markdown file.</li></ol></section>
+    <section class="card"><h2>Keyboard shortcuts</h2><div class="grid"><div class="mini"><kbd>Ctrl</kbd> + <kbd>S</kbd><br>Save file</div><div class="mini"><kbd>Ctrl</kbd> + <kbd>B</kbd><br>Bold text</div><div class="mini"><kbd>Ctrl</kbd> + <kbd>I</kbd><br>Italic text</div><div class="mini"><kbd>Ctrl</kbd> + <kbd>K</kbd><br>Insert link</div></div></section>
+    <section class="card"><h2>Recommended use</h2><p>Use MarkChrome for README files, technical notes, checklists, blog drafts, setup guides, project plans, and changelogs. Keep backups of important Markdown files in a synced folder or repository.</p></section>
+  </main>
+</body>
+</html>

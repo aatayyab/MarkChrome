@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MarkChrome — Browser Markdown Editor</title>
+  <meta name="description" content="MarkChrome is a lightweight browser-based Markdown editor with live preview, formatting toolbar, local file open/save, task lists, tables, code blocks, and clean documentation workflow." />
+  <meta property="og:title" content="MarkChrome — Browser Markdown Editor" />
+  <meta property="og:description" content="Write Markdown. Preview instantly. Save locally." />
+  <meta property="og:image" content="assets/markchrome-og.png" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <style>
+    :root{
+      --ink:#111a2a; --muted:#5b6d82; --soft:#eef7ff; --soft2:#f6fbff; --line:#dbe9f7;
+      --blue:#0b66d8; --blue2:#0f8eff; --teal:#10b9a7; --dark:#061d33; --white:#fff;
+      --shadow:0 18px 45px rgba(9,34,60,.10);
+      --radius:18px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:#fff;line-height:1.6;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    .wrap{width:min(1120px,calc(100% - 44px));margin-inline:auto}
+    .topbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(219,233,247,.8)}
+    .nav{height:68px;display:flex;align-items:center;gap:24px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:-.03em;margin-right:auto}
+    .brand img{width:40px;height:40px}.brand span{font-size:20px}.brand b{color:var(--blue)}
+    .navlinks{display:flex;align-items:center;gap:22px;font-size:13px;font-weight:800;color:#26364a}.navlinks a:hover{color:var(--blue)}
+    .pill{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 18px;font-weight:900;font-size:13px;line-height:1;border:1px solid transparent;white-space:nowrap;transition:.18s ease;cursor:pointer}
+    .pill.primary{background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;box-shadow:0 12px 25px rgba(15,142,255,.22)}
+    .pill.primary:hover{transform:translateY(-1px);box-shadow:0 16px 32px rgba(15,142,255,.28)}
+    .pill.secondary{background:#fff;color:var(--ink);border-color:var(--line)}.pill.secondary:hover{border-color:var(--blue);color:var(--blue)}
+    .hero{position:relative;background:radial-gradient(circle at 80% 12%,#e8fbff 0 24%,transparent 24%),linear-gradient(135deg,#fbfdff 0%,#f3f9ff 58%,#f0fffc 100%);padding:80px 0 96px;overflow:hidden}
+    .hero:before{content:"";position:absolute;inset:auto auto -150px -120px;width:360px;height:360px;border-radius:50%;background:#e8fff9;opacity:.8}
+    .hero-grid{display:grid;grid-template-columns:1fr 470px;align-items:center;gap:70px;position:relative;z-index:1}
+    .eyebrow{font-size:12px;font-weight:900;letter-spacing:.17em;color:var(--teal);text-transform:uppercase;margin-bottom:14px}
+    h1{font-size:58px;line-height:1.05;letter-spacing:-.055em;margin-bottom:22px;max-width:650px}.grad{background:linear-gradient(135deg,var(--blue),var(--teal));-webkit-background-clip:text;background-clip:text;color:transparent}
+    .lead{font-size:18px;color:var(--muted);max-width:620px;margin-bottom:28px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}.chips{display:flex;gap:10px;flex-wrap:wrap}.chip{border:1px solid var(--line);background:rgba(255,255,255,.7);border-radius:999px;padding:7px 12px;font-size:12px;color:#52657b;font-weight:700}
+    .hero-card{background:#fff;border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);padding:20px;position:relative}.hero-card:after{content:"";position:absolute;inset:-16px -16px auto auto;width:110px;height:110px;border-radius:30px;background:linear-gradient(135deg,var(--blue),var(--teal));opacity:.10;z-index:-1}
+    .app-window{background:#101d31;border-radius:20px;overflow:hidden}.window-top{height:52px;background:#172943;display:flex;align-items:center;gap:10px;padding:0 18px}.dot{width:12px;height:12px;border-radius:50%}.dot.r{background:#ff6b6b}.dot.y{background:#ffd166}.dot.g{background:#06d6a0}.window-body{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:18px}.pane{min-height:270px;border-radius:16px;padding:18px}.code{background:#202b42;color:#c9d1e0;font-family:"Cascadia Code",Consolas,monospace;font-size:14px}.code .blue{color:#4f8ef7}.code .green{color:#2ecc71}.preview{background:#fff;color:#253145}.preview h3{font-size:24px;margin-bottom:10px}.preview p{color:#617084;font-size:14px}.preview .line{height:10px;border-radius:6px;background:#dce8f5;margin:16px 0}.preview .box{height:78px;border-radius:12px;background:#f0f4fa;margin-top:18px}
+    .strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff}.strip-grid{display:grid;grid-template-columns:repeat(4,1fr)}.strip-item{padding:25px 20px;border-right:1px solid var(--line)}.strip-item:last-child{border-right:none}.strip-item b{display:block;color:var(--blue);font-size:13px;margin-bottom:5px}.strip-item span{font-size:13px;color:var(--muted)}
+    section{padding:82px 0}.center{text-align:center}.section-tag{font-size:12px;font-weight:900;letter-spacing:.18em;color:var(--teal);text-transform:uppercase;margin-bottom:10px}.section-title{font-size:36px;line-height:1.15;letter-spacing:-.035em;margin-bottom:15px}.section-lead{color:var(--muted);max-width:690px;margin:0 auto 34px;font-size:16px}
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{border:1px solid var(--line);background:#fff;border-radius:var(--radius);padding:28px;box-shadow:0 12px 28px rgba(9,34,60,.05);transition:.18s ease}.card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}.icon{width:48px;height:48px;border-radius:14px;background:#eef7ff;color:var(--blue);display:grid;place-items:center;font-size:22px;font-weight:900;margin-bottom:18px}.card h3{font-size:18px;margin-bottom:8px}.card p{color:var(--muted);font-size:14px}
+    .how{background:linear-gradient(135deg,#f5fbff,#f1fffc)}.how-grid{display:grid;grid-template-columns:1fr 420px;gap:70px;align-items:center}.steps{margin-top:28px;border-top:1px solid #cddfed}.step{display:grid;grid-template-columns:44px 1fr;gap:18px;padding:22px 0;border-bottom:1px solid #cddfed}.num{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;display:grid;place-items:center;font-weight:900}.step h3{font-size:17px;margin-bottom:4px}.step p{font-size:14px;color:var(--muted)}.brochure-mini{background:#fff;border:1px solid var(--line);border-radius:26px;padding:18px;box-shadow:var(--shadow)}.brochure-mini img{display:block;width:100%;border-radius:16px;border:1px solid var(--line)}
+    .guide-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.guide-card{border:1px solid var(--line);background:#fff;border-radius:16px;padding:22px}.guide-card b{display:block;margin-bottom:8px}.guide-card p{font-size:14px;color:var(--muted)}.shortcuts{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}.shortcut{background:var(--dark);color:#fff;border-radius:12px;padding:18px 22px;display:flex;align-items:center;gap:14px;font-weight:900}.key{background:#fff;color:#102034;border:1px solid #c5d5e6;border-bottom-width:3px;border-radius:7px;padding:5px 10px;font-family:Consolas,monospace;font-size:13px}
+    .requirements{background:#f5fbff}.req-grid{display:grid;grid-template-columns:1fr 460px;gap:70px;align-items:center}.list{list-style:none;margin:24px 0}.list li{padding:12px 0;border-bottom:1px solid #d7e6f5;color:#334459}.check{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--teal);color:#fff;font-size:13px;font-weight:900;margin-right:10px}.download-card{border-radius:24px;background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;padding:36px;box-shadow:var(--shadow)}.download-card .section-tag{color:#c9fff6}.download-card h2{font-size:32px;margin-bottom:10px}.download-card p{opacity:.9;margin-bottom:22px}.download-card .pill{background:#fff;color:var(--blue);margin-right:10px;margin-bottom:10px}
+    .contact{background:linear-gradient(135deg,#eef7ff,#f2fffc)}.contact-grid{display:grid;grid-template-columns:1fr 380px;gap:70px;align-items:center}.contact-card{background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:18px;padding:26px}.contact-card b{display:block;margin-bottom:6px}.contact-card a{display:block;color:var(--blue);font-weight:800;font-size:14px;margin-top:8px}
+    footer{background:var(--dark);color:#c8d5e5;padding:24px 0;font-size:13px}.foot{display:flex;align-items:center;justify-content:space-between;gap:20px}.foot a{color:#fff;font-weight:800}
+    @media (max-width:900px){.nav{height:auto;padding:14px 0;align-items:flex-start}.navlinks{display:none}.hero-grid,.how-grid,.req-grid,.contact-grid{grid-template-columns:1fr}.hero{padding:54px 0}.hero-card{order:-1}h1{font-size:42px}.features,.guide-grid,.strip-grid{grid-template-columns:1fr}.strip-item{border-right:none;border-bottom:1px solid var(--line)}.shortcuts{grid-template-columns:1fr}.foot{display:block}.foot a{display:block;margin-top:12px}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="#top" aria-label="MarkChrome home"><img src="assets/markchrome-icon.svg" alt=""><span>Mark<b>Chrome</b></span></a>
+      <nav class="navlinks" aria-label="Main navigation">
+        <a href="#features">Features</a><a href="#how">How it works</a><a href="#usage">Usage</a><a href="#requirements">Requirements</a><a href="#contact">Contact</a>
+      </nav>
+      <a class="pill secondary" href="brochure.html">Brochure</a>
+      <a class="pill primary" href="app.html">Launch Editor</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow">Markdown writing utility</div>
+          <h1>Write Markdown, preview instantly, and save your files <span class="grad">locally.</span></h1>
+          <p class="lead">MarkChrome is a lightweight browser-based Markdown editor for notes, README files, blog drafts, project plans, and documentation. It gives you a clean writing pane, a live rendered preview, and practical formatting tools without a heavy install.</p>
+          <div class="actions">
+            <a class="pill primary" href="app.html">Launch MarkChrome</a>
+            <a class="pill secondary" href="downloads/MarkChrome.html" download>Download standalone HTML</a>
+          </div>
+          <div class="chips"><span class="chip">Single-file app option</span><span class="chip">Local Markdown save</span><span class="chip">No account required</span></div>
+        </div>
+        <div class="hero-card" aria-label="MarkChrome editor preview">
+          <div class="app-window">
+            <div class="window-top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+            <div class="window-body">
+              <div class="pane code"><span class="blue"># Project Notes</span><br><br>- Write quickly<br>- Preview live<br>- Save as .md<br><br><span class="green">```js</span><br>console.log('ready')<br><span class="green">```</span></div>
+              <div class="pane preview"><h3>Project Notes</h3><p>Write quickly, preview live, and save as a Markdown file.</p><div class="line"></div><div class="line" style="width:80%"></div><div class="box"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="strip">
+      <div class="wrap strip-grid">
+        <div class="strip-item"><b>Live preview</b><span>Rendered output updates while you write.</span></div>
+        <div class="strip-item"><b>Toolbar driven</b><span>Headings, bold, links, lists, tables, and code.</span></div>
+        <div class="strip-item"><b>Local files</b><span>Open, save, and save-as Markdown documents.</span></div>
+        <div class="strip-item"><b>Static hosting</b><span>Runs from GitHub Pages as plain HTML/CSS/JS.</span></div>
+      </div>
+    </div>
+
+    <section id="features">
+      <div class="wrap center">
+        <div class="section-tag">Key features</div>
+        <h2 class="section-title">Built for simple, focused Markdown writing</h2>
+        <p class="section-lead">MarkChrome keeps the workflow practical: write on one side, review the final output on the other, and save your work as a normal Markdown file.</p>
+        <div class="features">
+          <article class="card"><div class="icon">✍</div><h3>Split-pane editor</h3><p>Use the Markdown source pane and rendered preview side by side for clean writing and quick review.</p></article>
+          <article class="card"><div class="icon">⚡</div><h3>Formatting toolbar</h3><p>Add headings, bold, italic, strikethrough, highlights, links, images, lists, quotes, rules, and code.</p></article>
+          <article class="card"><div class="icon">💾</div><h3>Open and save files</h3><p>Open existing Markdown files, save changes, or save a new copy directly from the browser.</p></article>
+          <article class="card"><div class="icon">☑</div><h3>Task lists and tables</h3><p>Create practical notes with checklists, numbered lists, Markdown tables, and structured sections.</p></article>
+          <article class="card"><div class="icon">{ }</div><h3>Code-friendly docs</h3><p>Use inline code and fenced code blocks for technical notes, scripts, setup guides, and project documentation.</p></article>
+          <article class="card"><div class="icon">🔒</div><h3>Browser-only workflow</h3><p>No backend is required for the website version. It can be hosted as static files on GitHub Pages.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="how" id="how">
+      <div class="wrap how-grid">
+        <div>
+          <div class="section-tag">How it works</div>
+          <h2 class="section-title">Four simple steps</h2>
+          <p class="section-lead" style="margin-left:0;text-align:left">Open the editor, start writing, use the toolbar when needed, and save your Markdown file locally.</p>
+          <div class="steps">
+            <div class="step"><div class="num">1</div><div><h3>Launch MarkChrome</h3><p>Open the hosted app from the website or download the standalone HTML file.</p></div></div>
+            <div class="step"><div class="num">2</div><div><h3>Write or paste Markdown</h3><p>Use the left pane for Markdown source and the right pane to review the rendered result.</p></div></div>
+            <div class="step"><div class="num">3</div><div><h3>Format with shortcuts</h3><p>Use the toolbar and keyboard shortcuts for common formatting actions.</p></div></div>
+            <div class="step"><div class="num">4</div><div><h3>Save your file</h3><p>Save as a .md file for GitHub, WordPress drafts, project notes, or documentation.</p></div></div>
+          </div>
+        </div>
+        <div class="brochure-mini"><a href="brochure.html"><img src="assets/markchrome-brochure.png" alt="MarkChrome brochure preview"></a></div>
+      </div>
+    </section>
+
+    <section id="usage">
+      <div class="wrap center">
+        <div class="section-tag">Usage guide</div>
+        <h2 class="section-title">Using MarkChrome safely</h2>
+        <p class="section-lead">Best for Markdown writing, drafting, and local document editing in modern desktop browsers.</p>
+        <div class="guide-grid">
+          <div class="guide-card"><b>1. Keep a local copy</b><p>Download the standalone HTML file if you want to run the editor from your own computer.</p></div>
+          <div class="guide-card"><b>2. Save often</b><p>Use Ctrl+S or the Save button after writing important notes or long drafts.</p></div>
+          <div class="guide-card"><b>3. Use browser support</b><p>Chrome and Edge provide the best file open/save experience for this type of browser app.</p></div>
+          <div class="guide-card"><b>4. Keep backups</b><p>Store important Markdown files in a synced folder, external drive, or version-controlled repository.</p></div>
+          <div class="guide-card"><b>5. Review preview output</b><p>Use the rendered preview to catch formatting issues before publishing your content elsewhere.</p></div>
+          <div class="guide-card"><b>6. Use for clean docs</b><p>Ideal for README files, blog drafts, technical notes, changelogs, checklists, and project plans.</p></div>
+        </div>
+        <div class="shortcuts">
+          <div class="shortcut"><span class="key">Ctrl</span> + <span class="key">S</span> Save Markdown</div>
+          <div class="shortcut"><span class="key">Ctrl</span> + <span class="key">K</span> Insert link</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="requirements" id="requirements">
+      <div class="wrap req-grid">
+        <div>
+          <div class="section-tag">System requirements</div>
+          <h2 class="section-title">What users need</h2>
+          <ul class="list">
+            <li><span class="check">✓</span> Modern desktop browser</li>
+            <li><span class="check">✓</span> Best file access experience in Chrome, Edge, or Chromium-based browsers</li>
+            <li><span class="check">✓</span> No server, database, account, or installation required for the hosted static version</li>
+            <li><span class="check">✓</span> Works as GitHub Pages static hosting</li>
+          </ul>
+          <a class="pill secondary" href="help.html">View usage help</a>
+        </div>
+        <div class="download-card">
+          <div class="section-tag">Ready to try it?</div>
+          <h2>Download MarkChrome</h2>
+          <p>The package includes the public website, editor app, logo assets, brochure page, and downloadable brochure.</p>
+          <a class="pill" href="app.html">Launch Editor</a>
+          <a class="pill" href="downloads/MarkChrome.html" download>Download App</a>
+          <a class="pill" href="downloads/MarkChrome-Brochure.png" download>Download Brochure</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="wrap contact-grid">
+        <div>
+          <div class="section-tag">Contact</div>
+          <h2 class="section-title">Questions, feedback, or documentation ideas?</h2>
+          <p class="lead">Please include your browser name, operating system, and the Markdown feature you were using when reporting an issue.</p>
+        </div>
+        <div class="contact-card">
+          <b>Amir Ali Tayyab</b>
+          <a href="mailto:aatayyab@yahoo.com">aatayyab@yahoo.com</a>
+          <a href="tel:+14074341786">+1-407-434-1786</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <span>© 2026 MarkChrome. Markdown writing made simple.</span>
+      <a href="#top">Back to top ↑</a>
+    </div>
+  </footer>
+</body>
+</html>
