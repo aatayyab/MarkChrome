@@ -2,13 +2,13 @@
 
 This package contains a complete static website, browser Markdown editor, logo files, and brochure assets for:
 
-https://aatayyab.github.io/MarkChrome
+https://aatayyab.github.io/MarkChrome[cite: 5]
 
 ## Files included
 
-- `index.html` — public marketing website
-- `app.html` — hosted MarkChrome editor
-- `help.html` — simple user help page
+- `index.html` — public marketing website[cite: 5]
+- `app.html` — hosted MarkChrome editor (fully updated with local auto-recovery, cross-browser file support, HTML/PDF export, and theme toggle)
+- `help.html` — simple user help page (or utilize the built-in app modal)
 - `brochure.html` — brochure viewer page
 - `assets/markchrome-logo.svg` — main logo
 - `assets/markchrome-logo.png` — main logo PNG
@@ -16,7 +16,7 @@ https://aatayyab.github.io/MarkChrome
 - `assets/markchrome-icon.png` — icon PNG
 - `assets/markchrome-brochure.png` — downloadable brochure image
 - `assets/markchrome-brochure.svg` — editable vector brochure
-- `downloads/MarkChrome.html` — standalone downloadable editor app
+- `downloads/MarkChrome.html` — standalone downloadable editor app (updated with latest features)
 - `downloads/MarkChrome-Brochure.png` — downloadable brochure copy
 - `.nojekyll` — keeps GitHub Pages simple for static files
 
@@ -58,50 +58,3 @@ MarkChrome/
 └── downloads/
     ├── MarkChrome.html
     └── MarkChrome-Brochure.png
-```
-
-### 3. Enable GitHub Pages
-
-1. Go to **Settings** inside the repository.
-2. Click **Pages** in the left menu.
-3. Under **Build and deployment**, choose:
-   - Source: **Deploy from a branch**
-   - Branch: **main**
-   - Folder: **/ root**
-4. Click **Save**.
-
-### 4. Wait for publishing
-
-GitHub usually takes 1–5 minutes to publish the site.
-
-Your final website address will be:
-
-```text
-https://aatayyab.github.io/MarkChrome/
-```
-
-### 5. Test everything
-
-Open the website and test:
-
-- **Launch Editor** opens `app.html`
-- **Download standalone HTML** downloads `downloads/MarkChrome.html`
-- **Brochure** opens `brochure.html`
-- Contact links open email/phone actions
-- Logo and brochure images appear correctly
-
-## Updating contact details
-
-Contact information is currently set to:
-
-```text
-Amir Ali Tayyab
-Email: aatayyab@yahoo.com
-Phone: +1-407-434-1786
-```
-
-To change it later, edit the contact section in `index.html` and the footer text in `assets/markchrome-brochure.svg` if you want to regenerate the brochure image.
-
-## Important note
-
-MarkChrome is a static HTML/CSS/JavaScript browser app. It is not affiliated with Google Chrome or Google.
