@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MarkChrome — Markdown Editor</title>
-    <meta name="description" content="MarkChrome browser-based Markdown editor with live preview and local file save." />
-    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <!-- html2pdf.js CDN for direct PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -24,6 +24,11 @@
             --preview-bg: #ffffff;
             --preview-text:#2c3340;
             --modal-bg:   rgba(20,24,38,0.82);
+        }
+
+        body.theme-dark {
+            --preview-bg: #1e2330;
+            --preview-text: #c9d1e0;
         }
 
         body {
@@ -88,7 +93,6 @@
         }
         #dirty-dot.visible { display: block; }
 
-        /* toolbar separator */
         .sep { width: 1px; height: 18px; background: var(--bg-hover); margin: 0 2px; flex-shrink: 0; }
 
         /* ─── TOOLBAR BUTTONS ──────────────────────────────────── */
@@ -109,7 +113,6 @@
             transition: background 0.12s, color 0.12s;
         }
         .tb-btn:hover { background: var(--accent); color: #fff; }
-        .tb-btn.active { background: var(--accent); color: #fff; }
 
         /* action buttons */
         .btn {
@@ -129,10 +132,12 @@
         #open-btn   { background: var(--accent); }
         #save-btn   { background: var(--accent2); color: #1a2a1a; }
         #save-as-btn{ background: #9b59b6; }
+        #export-btn { background: #34495e; }
+        #pdf-btn    { background: #27ae60; }
+        #help-btn   { background: #e74c3c; }
 
         .btn-group { display: flex; gap: 5px; align-items: center; margin-left: auto; }
 
-        /* kbd hint */
         .kbd-hint {
             background: var(--bg-dark);
             border: 1px solid var(--bg-hover);
@@ -239,7 +244,7 @@
 
         #preview:empty::before {
             content: attr(data-placeholder);
-            color: #bbb;
+            color: #aaa;
             pointer-events: none;
         }
 
@@ -251,7 +256,7 @@
             margin-bottom: 0.5em;
             line-height: 1.3;
             font-weight: 700;
-            color: #1a2030;
+            color: inherit;
         }
         #preview h1 { font-size: 1.9em; }
         #preview h2 { font-size: 1.45em; }
@@ -269,27 +274,29 @@
         #preview blockquote {
             border-left: 4px solid var(--accent);
             padding: 8px 16px;
-            color: #555;
+            color: inherit;
+            opacity: 0.85;
             margin: 1em 0;
-            background: #f4f7ff;
+            background: rgba(79,142,247,0.06);
             border-radius: 0 6px 6px 0;
         }
 
         #preview hr {
             border: none;
-            border-top: 2px solid #e8ecf2;
+            border-top: 2px solid var(--border);
             margin: 24px 0;
         }
 
         #preview mark {
             background: #fff3b0;
+            color: #222;
             padding: 1px 4px;
             border-radius: 3px;
         }
 
         #preview code {
-            background: #f1f3f8;
-            border: 1px solid #e0e4ee;
+            background: rgba(120,120,120,0.15);
+            border: 1px solid rgba(120,120,120,0.25);
             padding: 1px 5px;
             border-radius: 4px;
             font-family: 'Fira Code', 'Courier New', monospace;
@@ -336,32 +343,21 @@
             font-size: 0.9em;
         }
         #preview th, #preview td {
-            border: 1px solid #d8dde8;
+            border: 1px solid rgba(150,150,150,0.3);
             padding: 9px 13px;
             text-align: left;
         }
         #preview th {
-            background: #f4f6fb;
+            background: rgba(150,150,150,0.1);
             font-weight: 700;
         }
-        #preview tr:nth-child(even) { background: #f9fafc; }
 
         #preview input[type="checkbox"] {
             margin-right: 6px;
             accent-color: var(--accent);
         }
 
-        #preview kbd {
-            background: #f4f4f4;
-            border: 1px solid #ccc;
-            border-bottom-width: 2px;
-            border-radius: 4px;
-            padding: 1px 6px;
-            font-family: monospace;
-            font-size: 0.85em;
-        }
-
-        /* ─── LINK MODAL ───────────────────────────────────────── */
+        /* ─── MODAL ───────────────────────────────────────────── */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -379,10 +375,11 @@
             border-radius: 10px;
             padding: 24px 28px;
             min-width: 340px;
+            max-width: 520px;
             box-shadow: 0 12px 40px rgba(0,0,0,0.5);
         }
         .modal h3 {
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: var(--text-bright);
             margin-bottom: 16px;
         }
@@ -451,9 +448,6 @@
         #editor::-webkit-scrollbar-thumb { background: #3a4458; border-radius: 4px; }
         #preview::-webkit-scrollbar-track { background: transparent; }
         #preview::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
-
-	#help-btn { background: #e74c3c; }
-
     </style>
 </head>
 <body>
@@ -501,18 +495,16 @@
     <button class="tb-btn" onclick="insertStyle('codeblock')" title="Code Block">&#96;&#96;&#96; Block</button>
     <div class="sep"></div>
 
-    <span class="kbd-hint">Ctrl+S Save</span>
-    <span class="kbd-hint">Ctrl+B Bold</span>
-    <span class="kbd-hint">Ctrl+I Italic</span>
-    <span class="kbd-hint">Ctrl+K Link</span>
+    <button class="tb-btn" onclick="toggleTheme()" title="Toggle Preview Theme">🌓 Theme</button>
 
     <div class="btn-group">
-        <button class="btn" style="background:#34495e" onclick="window.location.href='index.html'">Website</button>
         <button id="new-btn"     class="btn" onclick="createNewFile()">New</button>
         <button id="open-btn"    class="btn" onclick="openMarkdownFile()">Open</button>
         <button id="save-btn"    class="btn" onclick="saveMarkdownFile()">Save</button>
         <button id="save-as-btn" class="btn" onclick="saveMarkdownFileAs()">Save As…</button>
-	<button id="help-btn" class="btn" onclick="window.open('help.html', '_blank', 'noopener,noreferrer')">Help</button>
+        <button id="export-btn"  class="btn" onclick="exportHtmlDocument()">Export HTML</button>
+        <button id="pdf-btn"     class="btn" onclick="exportPdfDocument()">Export PDF</button>
+        <button id="help-btn"    class="btn" onclick="openHelpModal()">Help</button>
     </div>
 </div>
 
@@ -540,7 +532,7 @@
     <span id="stat-cursor">Ln 1, Col 1</span>
 </div>
 
-<!-- ─── MODAL ──────────────────────────────────────────────────── -->
+<!-- ─── LINK/IMAGE MODAL ────────────────────────────────────────── -->
 <div class="modal-overlay" id="modal-overlay">
     <div class="modal" id="modal">
         <h3 id="modal-title">Insert Link</h3>
@@ -551,6 +543,28 @@
         <div class="modal-buttons">
             <button class="modal-btn cancel" onclick="closeModal()">Cancel</button>
             <button class="modal-btn confirm" id="modal-confirm">Insert</button>
+        </div>
+    </div>
+</div>
+
+<!-- ─── HELP MODAL (Self-Contained Cheat Sheet) ──────────────────── -->
+<div class="modal-overlay" id="help-modal-overlay">
+    <div class="modal" style="max-width: 540px;">
+        <h3>📖 MarkChrome Guide &amp; Cheat Sheet</h3>
+        <div style="font-size: 0.83rem; line-height: 1.6; color: var(--text-light); margin: 12px 0; max-height: 340px; overflow-y: auto; padding-right: 6px;">
+            <p><b># H1 / ## H2 / ### H3</b> — Headings</p>
+            <p><b>**Bold**</b> | <i>*Italic*</i> | <s>~~Strikethrough~~</s> | ==Highlight==</p>
+            <p><b>[Link Text](https://...)</b> | <b>![Alt](image-url)</b></p>
+            <p><b>- [ ] Task item</b> | <b>- Bullet item</b> | <b>1. Numbered item</b></p>
+            <p><b>| Header 1 | Header 2 |</b> — Tables</p>
+            <p><b>&gt; Blockquote</b> | <b>---</b> Horizontal Rule</p>
+            <p><b>`code`</b> (inline) | <b>```code block```</b> (multi-line)</p>
+            <hr style="border:none;border-top:1px solid var(--border);margin:12px 0;">
+            <p><b>Keyboard Shortcuts:</b><br>
+            <kbd class="kbd">Ctrl+S</kbd> Save &nbsp;|&nbsp; <kbd class="kbd">Ctrl+B</kbd> Bold &nbsp;|&nbsp; <kbd class="kbd">Ctrl+I</kbd> Italic &nbsp;|&nbsp; <kbd class="kbd">Ctrl+K</kbd> Link</p>
+        </div>
+        <div class="modal-buttons">
+            <button class="modal-btn confirm" onclick="closeHelpModal()">Got It</button>
         </div>
     </div>
 </div>
@@ -580,7 +594,7 @@ let currentFileName = 'untitled.md';
 let isDirty         = false;
 
 /* ─────────────────────────────────────────────────────────────────
-   UTILITIES
+   UTILITIES & AUTO-RECOVERY
 ───────────────────────────────────────────────────────────────── */
 function escapeHtml(str) {
     return String(str)
@@ -609,8 +623,24 @@ function markClean() {
     dirtyDot.classList.remove('visible');
 }
 
+// Background auto-save cache to localStorage every 3 seconds
+setInterval(() => {
+    if (isDirty && editor.value) {
+        localStorage.setItem('markchrome_draft', editor.value);
+        localStorage.setItem('markchrome_filename', currentFileName);
+    }
+}, 3000);
+
 /* ─────────────────────────────────────────────────────────────────
-   STATUS BAR
+   THEME TOGGLE
+───────────────────────────────────────────────────────────────── */
+function toggleTheme() {
+    document.body.classList.toggle('theme-dark');
+    showToast(document.body.classList.contains('theme-dark') ? '🌙 Dark Preview' : '☀️ Light Preview');
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   STATUS BAR & SCROLL SYNC
 ───────────────────────────────────────────────────────────────── */
 function updateStats() {
     const val   = editor.value;
@@ -635,9 +665,6 @@ editor.addEventListener('click',   updateCursor);
 editor.addEventListener('keyup',   updateCursor);
 editor.addEventListener('selectionchange', updateCursor);
 
-/* ─────────────────────────────────────────────────────────────────
-   SCROLL SYNC
-───────────────────────────────────────────────────────────────── */
 function syncScroll(source, target) {
     if (isScrolling) return;
     isScrolling = true;
@@ -657,12 +684,11 @@ editor.addEventListener('focus',   () => lastActivePane = 'editor');
 preview.addEventListener('focus',  () => lastActivePane = 'preview');
 
 /* ─────────────────────────────────────────────────────────────────
-   MARKDOWN → HTML  (fixed pipeline)
+   MARKDOWN → HTML PIPELINE
 ───────────────────────────────────────────────────────────────── */
 function markdownToHtml(md) {
     if (!md) return '';
 
-    // 1. Protect fenced code blocks
     const codeBlocks = [];
     let txt = md.replace(/```([a-z]*)\n?([\s\S]*?)```/gm, (_, lang, content) => {
         const langAttr = lang ? ` class="language-${escapeHtml(lang)}"` : '';
@@ -670,13 +696,10 @@ function markdownToHtml(md) {
         return `\x00CODEBLOCK${codeBlocks.length - 1}\x00`;
     });
 
-    // 2. Process line-by-line for block elements
     const lines = txt.split('\n');
     const out   = [];
 
-    let inUL    = false;
-    let inOL    = false;
-    let inBQ    = false;
+    let inUL = false, inOL = false, inBQ = false;
     let tableRows = [];
 
     function closeUL()    { if (inUL) { out.push('</ul>');         inUL = false; } }
@@ -694,7 +717,6 @@ function markdownToHtml(md) {
         const raw     = lines[i];
         const trimmed = raw.trim();
 
-        // ── Table ───────────────────────────────────────
         if (trimmed.startsWith('|') && trimmed.endsWith('|')) {
             closeUL(); closeOL(); closeBQ();
             tableRows.push(trimmed);
@@ -703,29 +725,21 @@ function markdownToHtml(md) {
             closeTable();
         }
 
-        // ── Blank line ──────────────────────────────────
-        if (!trimmed) {
-            closeAll();
-            continue;
-        }
+        if (!trimmed) { closeAll(); continue; }
 
-        // ── Headings ────────────────────────────────────
         const hm = trimmed.match(/^(#{1,6})\s+(.+)$/);
         if (hm) {
             closeAll();
-            const level = hm[1].length;
-            out.push(`<h${level}>${inlineToHtml(hm[2])}</h${level}>`);
+            out.push(`<h${hm[1].length}>${inlineToHtml(hm[2])}</h${hm[1].length}>`);
             continue;
         }
 
-        // ── HR ──────────────────────────────────────────
         if (/^[-*_]{3,}$/.test(trimmed)) {
             closeAll();
             out.push('<hr>');
             continue;
         }
 
-        // ── Blockquote ──────────────────────────────────
         if (trimmed.startsWith('> ')) {
             closeUL(); closeOL(); closeTable();
             if (!inBQ) { out.push('<blockquote>'); inBQ = true; }
@@ -733,7 +747,6 @@ function markdownToHtml(md) {
             continue;
         }
 
-        // ── Task list (before general UL) ───────────────
         const taskM = trimmed.match(/^[-*]\s+\[(x| )\]\s+(.+)$/i);
         if (taskM) {
             closeOL(); closeBQ(); closeTable();
@@ -743,7 +756,6 @@ function markdownToHtml(md) {
             continue;
         }
 
-        // ── Unordered list ──────────────────────────────
         const ulM = trimmed.match(/^[-*]\s+(.+)$/);
         if (ulM) {
             closeOL(); closeBQ(); closeTable();
@@ -752,7 +764,6 @@ function markdownToHtml(md) {
             continue;
         }
 
-        // ── Ordered list ────────────────────────────────
         const olM = trimmed.match(/^\d+\.\s+(.+)$/);
         if (olM) {
             closeUL(); closeBQ(); closeTable();
@@ -761,14 +772,12 @@ function markdownToHtml(md) {
             continue;
         }
 
-        // ── Plain paragraph ─────────────────────────────
         closeAll();
         out.push(`<p>${inlineToHtml(trimmed)}</p>`);
     }
 
     closeAll();
 
-    // 3. Restore code blocks
     let result = out.join('\n');
     codeBlocks.forEach((block, i) => {
         result = result.replace(`\x00CODEBLOCK${i}\x00`, block);
@@ -777,35 +786,23 @@ function markdownToHtml(md) {
     return result;
 }
 
-/* Inline markdown: bold/italic/strike/highlight/code/links/images
-   IMPORTANT: Applied AFTER escapeHtml so we must work on safe text. */
 function inlineToHtml(str) {
-    // Protect inline code first
     const inlineCodes = [];
     let s = str.replace(/`([^`]+)`/g, (_, c) => {
         inlineCodes.push(`<code>${escapeHtml(c)}</code>`);
         return `\x00IC${inlineCodes.length - 1}\x00`;
     });
 
-    // Escape HTML in the rest
     s = escapeHtml(s);
 
-    // Inline formatting (order matters — longer markers first)
     s = s.replace(/\*\*\*(.+?)\*\*\*/g,   '<strong><em>$1</em></strong>');
     s = s.replace(/\*\*(.+?)\*\*/g,        '<strong>$1</strong>');
     s = s.replace(/\*(.+?)\*/g,            '<em>$1</em>');
     s = s.replace(/~~(.+?)~~/g,            '<del>$1</del>');
     s = s.replace(/==(.+?)==/g,            '<mark>$1</mark>');
+    s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, url) => `<img src="${url}" alt="${alt}">`);
+    s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, url) => `<a href="${url}" target="_blank" rel="noopener">${text}</a>`);
 
-    // Images before links
-    s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, url) =>
-        `<img src="${url}" alt="${alt}" style="max-width:100%;">`);
-
-    // Links
-    s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, url) =>
-        `<a href="${url}" target="_blank" rel="noopener">${text}</a>`);
-
-    // Restore inline code
     inlineCodes.forEach((code, i) => {
         s = s.replace(`\x00IC${i}\x00`, code);
     });
@@ -814,7 +811,6 @@ function inlineToHtml(str) {
 }
 
 function compileTable(rows) {
-    // Filter out separator rows (---) and blank
     const dataRows = rows.filter(r => !/^\|[-| :]+\|$/.test(r) && r.trim() !== '');
     if (dataRows.length < 1) return '';
 
@@ -833,7 +829,7 @@ function compileTable(rows) {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   HTML → MARKDOWN  (improved: preserves table content)
+   HTML → MARKDOWN
 ───────────────────────────────────────────────────────────────── */
 function htmlToMarkdown(html) {
     const div = document.createElement('div');
@@ -848,7 +844,6 @@ function htmlToMarkdown(html) {
         if (node.nodeType !== Node.ELEMENT_NODE) return;
 
         const tag = node.nodeName;
-
         switch (tag) {
             case 'H1': buf.push('\n# '   + innerText(node) + '\n\n'); return;
             case 'H2': buf.push('\n## '  + innerText(node) + '\n\n'); return;
@@ -913,12 +908,10 @@ function htmlToMarkdown(html) {
                 return;
             }
         }
-
         node.childNodes.forEach(walk);
     }
 
     function innerText(node) {
-        // Lightweight innerText preserving inline markdown
         const parts = [];
         node.childNodes.forEach(child => {
             if (child.nodeType === Node.TEXT_NODE) {
@@ -944,7 +937,7 @@ function htmlToMarkdown(html) {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   SYNC EVENTS
+   SYNC EVENTS & KEYBOARD SHORTCUTS
 ───────────────────────────────────────────────────────────────── */
 let renderTimer = null;
 
@@ -953,7 +946,6 @@ editor.addEventListener('input', () => {
     markDirty();
     updateStats();
 
-    // Debounce render for fast typing
     clearTimeout(renderTimer);
     renderTimer = setTimeout(() => {
         isUpdating = true;
@@ -971,9 +963,6 @@ preview.addEventListener('input', () => {
     isUpdating = false;
 });
 
-/* ─────────────────────────────────────────────────────────────────
-   KEYBOARD SHORTCUTS
-───────────────────────────────────────────────────────────────── */
 editor.addEventListener('keydown', e => {
     if (e.key === 'Tab') {
         e.preventDefault();
@@ -1000,20 +989,14 @@ window.addEventListener('keydown', e => {
 });
 
 /* ─────────────────────────────────────────────────────────────────
-   SELECTION SAVE / RESTORE
-   Toolbar buttons steal focus from the preview. We save the
-   cursor/selection just before that happens and restore it
-   inside insertStylePreview so every insertion lands at the
-   exact caret position the user was at.
+   SELECTION HANDLING & TOOLBAR INSERTION
 ───────────────────────────────────────────────────────────────── */
 let savedPreviewRange = null;
 
-// Save selection whenever the user interacts with the preview
-preview.addEventListener('keyup',      savePreviewSelection);
-preview.addEventListener('mouseup',    savePreviewSelection);
-preview.addEventListener('touchend',   savePreviewSelection);
-// Also save on blur so the very last caret position is captured
-preview.addEventListener('blur',       savePreviewSelection);
+preview.addEventListener('keyup',    savePreviewSelection);
+preview.addEventListener('mouseup',  savePreviewSelection);
+preview.addEventListener('touchend', savePreviewSelection);
+preview.addEventListener('blur',     savePreviewSelection);
 
 function savePreviewSelection() {
     const sel = window.getSelection();
@@ -1031,12 +1014,8 @@ function restorePreviewSelection() {
     return true;
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   INSERT STYLE
-───────────────────────────────────────────────────────────────── */
 function insertStyle(type) {
     if (lastActivePane === 'editor' || document.activeElement !== preview) {
-        // If the user's last active pane was the preview, route there
         if (lastActivePane === 'preview' && savedPreviewRange) {
             insertStylePreview(type);
         } else {
@@ -1089,56 +1068,38 @@ function insertStyleEditor(type) {
 }
 
 function insertStylePreview(type) {
-    // Restore the saved selection (toolbar click stole focus)
-    if (!restorePreviewSelection()) {
-        preview.focus();
-    }
+    if (!restorePreviewSelection()) { preview.focus(); }
 
     const sel = window.getSelection();
     if (!sel || !sel.rangeCount) return;
     const range = sel.getRangeAt(0);
 
-    // Helper: find the block-level ancestor inside #preview that
-    // contains the current range start, so we can insert relative to it.
     function getBlockAncestor() {
         let node = range.startContainer;
-        // Walk up until we find a direct child of #preview
-        while (node && node.parentNode !== preview) {
-            node = node.parentNode;
-        }
-        return node; // may be null if range is directly in #preview
+        while (node && node.parentNode !== preview) { node = node.parentNode; }
+        return node;
     }
 
-    // Helper: wrap the current range's text in a new block element,
-    // replacing the nearest block ancestor inside #preview.
     function replaceNearestBlock(tag) {
         const blockEl = document.createElement(tag);
         const selectedText = range.toString().trim();
-
-        // If there is selected text, use it; otherwise use the full
-        // text of the current block ancestor (so typing "some text"
-        // and pressing H1 converts that paragraph to a heading).
         const ancestor = getBlockAncestor();
         if (selectedText) {
             blockEl.textContent = selectedText;
             range.deleteContents();
-            // Surround the collapsed range's block with the new element
             if (ancestor && ancestor !== preview) {
                 ancestor.parentNode.insertBefore(blockEl, ancestor.nextSibling);
             } else {
                 range.insertNode(blockEl);
             }
         } else if (ancestor && ancestor !== preview) {
-            // Convert the existing block in-place
             blockEl.innerHTML = ancestor.innerHTML || ancestor.textContent || tag + ' text';
             ancestor.parentNode.replaceChild(blockEl, ancestor);
         } else {
-            // Fallback: insert at range position
             blockEl.textContent = tag + ' text';
             range.insertNode(blockEl);
         }
 
-        // Place cursor inside the new element
         const newRange = document.createRange();
         newRange.selectNodeContents(blockEl);
         newRange.collapse(false);
@@ -1151,11 +1112,9 @@ function insertStylePreview(type) {
         case 'h1': replaceNearestBlock('h1'); break;
         case 'h2': replaceNearestBlock('h2'); break;
         case 'h3': replaceNearestBlock('h3'); break;
-
         case 'bold':          document.execCommand('bold');          break;
         case 'italic':        document.execCommand('italic');        break;
         case 'strikethrough': document.execCommand('strikeThrough'); break;
-
         case 'highlight': {
             const mark = document.createElement('mark');
             mark.textContent = range.toString() || 'highlighted';
@@ -1163,12 +1122,8 @@ function insertStylePreview(type) {
             range.insertNode(mark);
             break;
         }
-        case 'link':
-            openModal('link', range.toString());
-            return;
-        case 'image':
-            openModal('image', '');
-            return;
+        case 'link':  openModal('link', range.toString()); return;
+        case 'image': openModal('image', ''); return;
         case 'list':        document.execCommand('insertUnorderedList'); break;
         case 'orderedlist': document.execCommand('insertOrderedList');   break;
         case 'tasklist': {
@@ -1229,26 +1184,24 @@ function insertStylePreview(type) {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   MODAL (replaces browser prompt())
+   MODALS (Link/Image & Help Cheat Sheet)
 ───────────────────────────────────────────────────────────────── */
 let modalCallback = null;
 
 function openModal(type, selectedText) {
-    const overlay  = document.getElementById('modal-overlay');
-    const title    = document.getElementById('modal-title');
-    const label1   = document.getElementById('modal-label1');
-    const input1   = document.getElementById('modal-input1');
-    const label2   = document.getElementById('modal-label2');
-    const input2   = document.getElementById('modal-input2');
-    const confirm  = document.getElementById('modal-confirm');
+    const overlay = document.getElementById('modal-overlay');
+    const title   = document.getElementById('modal-title');
+    const label1  = document.getElementById('modal-label1');
+    const input1  = document.getElementById('modal-input1');
+    const label2  = document.getElementById('modal-label2');
+    const input2  = document.getElementById('modal-input2');
+    const confirm = document.getElementById('modal-confirm');
 
     if (type === 'link') {
         title.textContent  = 'Insert Link';
         label1.textContent = 'Display Text';
-        input1.placeholder = 'Link text';
         input1.value       = selectedText || '';
         label2.textContent = 'URL';
-        input2.placeholder = 'https://example.com';
         input2.value       = '';
 
         modalCallback = () => {
@@ -1264,10 +1217,8 @@ function openModal(type, selectedText) {
     } else {
         title.textContent  = 'Insert Image';
         label1.textContent = 'Alt Text';
-        input1.placeholder = 'Image description';
         input1.value       = selectedText || '';
         label2.textContent = 'Image URL';
-        input2.placeholder = 'https://example.com/image.jpg';
         input2.value       = '';
 
         modalCallback = () => {
@@ -1277,14 +1228,11 @@ function openModal(type, selectedText) {
                 insertIntoEditor(`![${alt}](${url})`);
             } else {
                 const img = document.createElement('img');
-                img.src = url;
-                img.alt = alt;
-                img.style.maxWidth = '100%';
+                img.src = url; img.alt = alt;
                 const sel = window.getSelection();
                 if (sel && sel.rangeCount) {
                     const r = sel.getRangeAt(0);
-                    r.deleteContents();
-                    r.insertNode(img);
+                    r.deleteContents(); r.insertNode(img);
                 }
                 preview.dispatchEvent(new Event('input'));
             }
@@ -1293,7 +1241,6 @@ function openModal(type, selectedText) {
 
     overlay.classList.add('open');
     setTimeout(() => input2.focus(), 50);
-
     confirm.onclick = () => { modalCallback && modalCallback(); closeModal(); };
 }
 
@@ -1302,13 +1249,23 @@ function closeModal() {
     modalCallback = null;
 }
 
+function openHelpModal() {
+    document.getElementById('help-modal-overlay').classList.add('open');
+}
+
+function closeHelpModal() {
+    document.getElementById('help-modal-overlay').classList.remove('open');
+}
+
 document.getElementById('modal-overlay').addEventListener('click', e => {
     if (e.target === document.getElementById('modal-overlay')) closeModal();
 });
+document.getElementById('help-modal-overlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('help-modal-overlay')) closeHelpModal();
+});
 
-document.getElementById('modal').addEventListener('keydown', e => {
-    if (e.key === 'Enter') { e.preventDefault(); document.getElementById('modal-confirm').click(); }
-    if (e.key === 'Escape') closeModal();
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeModal(); closeHelpModal(); }
 });
 
 function insertIntoEditor(text) {
@@ -1322,7 +1279,7 @@ function insertIntoEditor(text) {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   FILE OPERATIONS
+   CROSS-BROWSER FILE OPERATIONS & EXPORTS (HTML & PDF)
 ───────────────────────────────────────────────────────────────── */
 function setFileName(name) {
     currentFileName = name;
@@ -1342,12 +1299,32 @@ function createNewFile() {
 
 async function openMarkdownFile() {
     if (isDirty && !confirm('Unsaved changes will be lost. Continue?')) return;
+    
+    if (!window.showOpenFilePicker) {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.md,.markdown,.txt';
+        input.onchange = e => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = event => {
+                editor.value = event.target.result;
+                preview.innerHTML = markdownToHtml(editor.value);
+                setFileName(file.name);
+                markClean();
+                updateStats();
+                showToast('📂 File opened: ' + file.name);
+            };
+            reader.readAsText(file);
+        };
+        input.click();
+        return;
+    }
+
     try {
         const [handle] = await window.showOpenFilePicker({
-            types: [{
-                description: 'Markdown',
-                accept: { 'text/markdown': ['.md', '.markdown', '.txt'] }
-            }]
+            types: [{ description: 'Markdown', accept: { 'text/markdown': ['.md', '.markdown', '.txt'] } }]
         });
         fileHandle = handle;
         setFileName(handle.name);
@@ -1358,13 +1335,13 @@ async function openMarkdownFile() {
         updateStats();
         showToast('📂 File opened: ' + handle.name);
     } catch (e) {
-        // User cancelled — ignore
+        // User cancelled
     }
 }
 
 async function saveMarkdownFile() {
     if (!editor.value.trim()) { showToast('Nothing to save.'); return; }
-    if (fileHandle) {
+    if (fileHandle && window.showSaveFilePicker) {
         try {
             const writable = await fileHandle.createWritable();
             await writable.write(editor.value);
@@ -1381,13 +1358,24 @@ async function saveMarkdownFile() {
 
 async function saveMarkdownFileAs() {
     if (!editor.value.trim()) { showToast('Nothing to save.'); return; }
+
+    if (!window.showSaveFilePicker) {
+        const blob = new Blob([editor.value], { type: 'text/markdown;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = currentFileName;
+        a.click();
+        URL.revokeObjectURL(url);
+        markClean();
+        showToast('✓ Downloaded — ' + currentFileName);
+        return;
+    }
+
     try {
         const handle = await window.showSaveFilePicker({
             suggestedName: currentFileName,
-            types: [{
-                description: 'Markdown',
-                accept: { 'text/markdown': ['.md'] }
-            }]
+            types: [{ description: 'Markdown', accept: { 'text/markdown': ['.md'] } }]
         });
         fileHandle = handle;
         setFileName(handle.name);
@@ -1397,8 +1385,60 @@ async function saveMarkdownFileAs() {
         markClean();
         showToast('✓ Saved As — ' + handle.name);
     } catch (e) {
-        // User cancelled — ignore
+        // User cancelled
     }
+}
+
+function exportHtmlDocument() {
+    const htmlContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>${currentFileName}</title>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; color: #333; line-height: 1.7; }
+h1, h2, h3 { margin-top: 1.2em; color: #111; }
+code { background: #f1f3f8; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+pre { background: #1e2330; color: #abb2bf; padding: 16px; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; color: inherit; }
+blockquote { border-left: 4px solid #4f8ef7; margin: 1em 0; padding: 8px 16px; background: #f4f7ff; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; }
+th, td { border: 1px solid #d8dde8; padding: 8px 12px; text-align: left; }
+th { background: #f4f6fb; }
+</style>
+</head>
+<body>
+${preview.innerHTML}
+</body>
+</html>`;
+
+    const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = currentFileName.replace(/\.[^/.]+$/, '') + '.html';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('🌐 Exported standalone HTML');
+}
+
+function exportPdfDocument() {
+    const element = document.getElementById('preview');
+    const opt = {
+        margin:       [0.5, 0.5, 0.5, 0.5],
+        filename:     currentFileName.replace(/\.[^/.]+$/, '') + '.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+    
+    showToast('⏳ Generating PDF...');
+    html2pdf().set(opt).from(element).save().then(() => {
+        showToast('✓ PDF Exported Successfully');
+    }).catch(err => {
+        console.error(err);
+        showToast('❌ PDF export failed');
+    });
 }
 
 /* ─────────────────────────────────────────────────────────────────
@@ -1410,11 +1450,17 @@ Write **Markdown** in the left pane — the preview updates instantly.
 
 ## Features
 
-- Live split-pane preview
-- Full toolbar with keyboard shortcuts: **Ctrl+B** bold, **Ctrl+I** italic, **Ctrl+K** link
-- Task lists, tables, code blocks, blockquotes
-- Open, save, and save-as with the File System API
-- Word count & cursor position in the status bar
+* **Dual-Pane Workspace:** Side-by-side layout with a raw Markdown source editor on the left and a live rendered HTML preview pane on the right.
+* **Synchronized Scrolling:** Automatically matches and links scroll positions between the editor and preview panes.
+* **Bi-Directional Editing:** Contenteditable preview pane that lets you format text visually and syncs changes back into clean Markdown source syntax.
+* **Formatting Toolbar & Controls:** Quick buttons for H1-H3 headings, bold, italic, strikethrough, highlights, inline code, and multi-line code blocks.
+* **Links, Media & Structures:** Dedicated modal inputs for hyperlinks and images, plus bullet lists, numbered lists, task check lists, blockquotes, horizontal rules, and table insertion.
+* **Local Auto-Recovery:** Background caching via localStorage every 3 seconds to prevent accidental data loss.
+* **File Management:** Open, Save, and Save As capabilities supporting native File System APIs with automatic cross-browser fallbacks for Firefox and Safari.
+* **Export Options:** Standalone HTML packaging and direct PDF generation using html2pdf.js.
+* **Theme Toggle:** Switch between a clean light preview mode and a dark preview theme.
+* **Interactive Help Modal:** Built-in self-contained Markdown cheat sheet popup.
+* **Live Status Bar:** Real-time line count, word count, character count, and exact cursor coordinate tracking.
 
 ## Example
 
@@ -1422,7 +1468,7 @@ Write **Markdown** in the left pane — the preview updates instantly.
 |---------------|---------|
 | Live Preview  | ✅ Ready |
 | File Save     | ✅ Ready |
-| Syntax Guide  | ✅ Below |
+| Auto-Recovery | ✅ Ready |
 
 > Tip: You can also type and format directly in the **Preview** pane on the right.
 
@@ -1434,7 +1480,16 @@ function greet(name) {
 \`\`\`
 `;
 
-editor.value = defaultContent;
+const savedDraft = localStorage.getItem('markchrome_draft');
+if (savedDraft) {
+    editor.value = savedDraft;
+    currentFileName = localStorage.getItem('markchrome_filename') || 'untitled.md';
+    setFileName(currentFileName);
+    markDirty();
+} else {
+    editor.value = defaultContent;
+}
+
 preview.innerHTML = markdownToHtml(editor.value);
 updateStats();
 </script>
