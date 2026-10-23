@@ -1,60 +1,63 @@
-# MarkChrome GitHub Pages Launch Package
+# MarkChrome 2.0 — Universal Markdown Workspace
 
-This package contains a complete static website, browser Markdown editor, logo files, and brochure assets for:
+A free, browser-based Markdown editor with live preview. No account, no server, no install. Your files stay on your device.
 
-https://aatayyab.github.io/MarkChrome[cite: 5]
+- 🌐 **Website & editor:** https://aatayyab.github.io/MarkChrome/
+- ⬇️ **Downloads:** https://github.com/aatayyab/MarkChrome/releases/latest
+- 📖 **Help guide:** https://aatayyab.github.io/MarkChrome/help.html
+- 📄 **Brochure:** https://aatayyab.github.io/MarkChrome/brochure.html
 
-## Files included
+## What's new in Release 2.0
 
-- `index.html` — public marketing website[cite: 5]
-- `app.html` — hosted MarkChrome editor (fully updated with local auto-recovery, cross-browser file support, HTML/PDF export, and theme toggle)
-- `help.html` — simple user help page (or utilize the built-in app modal)
-- `brochure.html` — brochure viewer page
-- `assets/markchrome-logo.svg` — main logo
-- `assets/markchrome-logo.png` — main logo PNG
-- `assets/markchrome-icon.svg` — icon / favicon source
-- `assets/markchrome-icon.png` — icon PNG
-- `assets/markchrome-brochure.png` — downloadable brochure image
-- `assets/markchrome-brochure.svg` — editable vector brochure
-- `downloads/MarkChrome.html` — standalone downloadable editor app (updated with latest features)
-- `downloads/MarkChrome-Brochure.png` — downloadable brochure copy
-- `.nojekyll` — keeps GitHub Pages simple for static files
+- **Mermaid diagrams** — flowcharts and sequence diagrams from plain text
+- **KaTeX math** — inline `$E=mc^2$` and block `$$ … $$` formulas
+- **Syntax highlighting** with a one-click Copy button on code blocks
+- **Outline sidebar** — clickable table of contents
+- **Find & Replace** — Find Next, Replace, Replace All (Ctrl+F / Ctrl+H)
+- **Zen mode** — distraction-free writing (Esc to exit, Exit button on phones)
+- **Markdown validator** — finds unclosed code blocks, stray `*`, broken table rows
+- **Copy Rich Text** — paste formatted content (diagrams included) into Word, Docs or email
+- **YAML front matter** display (Hugo, Jekyll, MkDocs)
+- **Drag & drop** `.md` / `.txt` files and **paste screenshots** directly
+- **3 interface languages** — English, Español, اردو (right-to-left)
+- **3 themes** — including a high-contrast mode
+- **Shortcodes** — type `//date` or `//table` then Space
+- Auto-recovery, HTML & PDF export, Save / Save As, cross-browser file support
 
-## Launch instructions for GitHub Pages
+> **Note:** In 2.0 the right-hand preview is read-only; all typing happens in the left Markdown pane.
+> The app loads its helper libraries (Mermaid, KaTeX, Prism, marked, DOMPurify, html2pdf) from public CDNs, so an internet connection is needed when opening it.
 
-### 1. Create the GitHub repository
+See [CHANGELOG.md](CHANGELOG.md) for the full history.
 
-1. Sign in to GitHub.
-2. Click **New repository**.
-3. Repository name must be exactly: `MarkChrome`
-4. Owner should be: `aatayyab`
-5. Choose **Public**.
-6. Click **Create repository**.
-
-### 2. Upload the website files
-
-1. Open the new `MarkChrome` repository.
-2. Click **Add file** → **Upload files**.
-3. Upload the contents of this folder, not the folder itself.
-4. Make sure `index.html` is visible in the root of the repository.
-5. Click **Commit changes**.
-
-Correct structure:
+## Repository structure
 
 ```text
 MarkChrome/
-├── index.html
-├── app.html
-├── help.html
-├── brochure.html
-├── .nojekyll
+├── index.html              Public marketing website
+├── app.html                Hosted MarkChrome 2.0 editor
+├── help.html               User guide
+├── brochure.html           Brochure viewer page
+├── README.md
+├── CHANGELOG.md
+├── RELEASE_NOTES_v2.0.md   Text to paste into the GitHub Release
+├── .nojekyll               Keeps GitHub Pages simple
 ├── assets/
-│   ├── markchrome-logo.svg
-│   ├── markchrome-logo.png
-│   ├── markchrome-icon.svg
-│   ├── markchrome-icon.png
-│   ├── markchrome-brochure.png
-│   └── markchrome-brochure.svg
+│   ├── markchrome-logo.svg / .png
+│   ├── markchrome-icon.svg / .png
+│   ├── favicon.svg
+│   ├── markchrome-brochure.svg / .png
+│   └── markchrome-og.svg / .png      (social share image)
 └── downloads/
-    ├── MarkChrome.html
+    ├── MarkChrome.html               Standalone downloadable app
     └── MarkChrome-Brochure.png
+```
+
+## Run it
+
+- **Online:** open https://aatayyab.github.io/MarkChrome/app.html
+- **Offline-ish:** download `downloads/MarkChrome.html` and double-click it (needs internet for the helper libraries).
+- **Locally from source:** download this repo and open `index.html`.
+
+## Contact
+
+Amir Ali Tayyab — aatayyab@yahoo.com — +1-407-434-1786
