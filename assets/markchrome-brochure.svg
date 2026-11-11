@@ -1,0 +1,279 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1600" width="100%" height="100%">
+  <defs>
+    <style>
+      .t-brand { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 900; font-size: 24px; fill: #ffffff; }
+      .t-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 900; font-size: 36px; fill: #111a2a; }
+      .t-subtitle { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 800; font-size: 15px; fill: #0b66d8; letter-spacing: 1.5px; }
+      .t-desc { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 15px; fill: #5b6d82; }
+      
+      .c-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 800; font-size: 16px; fill: #111a2a; }
+      .c-desc { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 12.5px; fill: #617084; line-height: 1.4; }
+      
+      .list-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 700; font-size: 14.5px; fill: #172943; }
+      .btn-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 900; font-size: 18px; fill: #ffffff; }
+      .btn-text-out { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 900; font-size: 18px; fill: #0b66d8; }
+      .footer-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 14px; fill: #ffffff; }
+    </style>
+
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fcfdff" />
+      <stop offset="50%" stop-color="#f0f7ff" />
+      <stop offset="100%" stop-color="#e8f8f6" />
+    </linearGradient>
+
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b66d8" />
+      <stop offset="100%" stop-color="#10b9a7" />
+    </linearGradient>
+
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="12" stdDeviation="15" flood-color="#09223c" flood-opacity="0.12" />
+    </filter>
+    <filter id="shadowSm" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#09223c" flood-opacity="0.05" />
+    </filter>
+  </defs>
+
+  <!-- Base Background -->
+  <rect width="1200" height="1600" fill="url(#bgGrad)" />
+  <circle cx="1050" cy="150" r="300" fill="#0f8eff" opacity="0.04" />
+  <circle cx="100" cy="1400" r="250" fill="#10b9a7" opacity="0.04" />
+
+  <!-- TOP BAR -->
+  <g transform="translate(60, 36)">
+    <rect x="0" y="0" width="56" height="56" rx="14" fill="#ffffff" filter="url(#shadowSm)" />
+    <rect x="3" y="3" width="50" height="50" rx="12" fill="url(#primaryGrad)" />
+    <text x="14" y="36" class="t-brand">M</text>
+    <text x="32" y="36" class="t-brand" fill="#ffd166">C</text>
+    
+    <rect x="930" y="8" width="150" height="40" rx="20" fill="url(#primaryGrad)" />
+    <text x="1005" y="33" font-family="sans-serif" font-weight="900" font-size="14" fill="#ffffff" text-anchor="middle">MARKCHROME 3.0</text>
+  </g>
+
+  <!-- HERO TITLE SECTION -->
+  <g transform="translate(60, 125)">
+    <rect x="0" y="0" width="6" height="70" rx="3" fill="#0b66d8" />
+    <text x="24" y="24" class="t-subtitle">RELEASE 3.0 HIGHLIGHTS</text>
+    <text x="24" y="62" class="t-title">MarkChrome 3.0</text>
+    <text x="24" y="105" class="t-desc">Universal Markdown Workspace & Visual WYSIWYG Editor</text>
+    <text x="24" y="128" font-family="sans-serif" font-size="14" fill="#8a99ad">Single-file, zero-dependency browser application</text>
+  </g>
+
+  <!-- MOCKUP WINDOW (Top Right) -->
+  <g transform="translate(600, 115)" filter="url(#shadow)">
+    <rect x="0" y="0" width="540" height="260" rx="16" fill="#101d31" />
+    <path d="M 0 16 A 16 16 0 0 1 16 0 L 524 0 A 16 16 0 0 1 540 16 L 540 38 L 0 38 Z" fill="#172943" />
+    <circle cx="20" cy="19" r="5" fill="#ff6b6b" />
+    <circle cx="36" cy="19" r="5" fill="#ffd166" />
+    <circle cx="52" cy="19" r="5" fill="#06d6a0" />
+
+    <!-- Mode switch pill -->
+    <rect x="340" y="7" width="180" height="24" rx="12" fill="#202b42" />
+    <rect x="342" y="9" width="90" height="20" rx="10" fill="#0f8eff" />
+    <text x="387" y="23" font-family="sans-serif" font-weight="700" font-size="10" fill="#ffffff" text-anchor="middle">Visual (M2)</text>
+    <text x="475" y="23" font-family="sans-serif" font-weight="700" font-size="10" fill="#8a99ad" text-anchor="middle">Code (M1)</text>
+
+    <!-- Split Screen Left Pane -->
+    <rect x="12" y="48" width="250" height="198" rx="8" fill="#1b283d" />
+    <text x="24" y="72" font-family="monospace" font-weight="bold" font-size="12" fill="#4f8ef7"># MarkChrome 3.0</text>
+    <text x="24" y="92" font-family="monospace" font-size="11" fill="#c9d1e0">1. Visual WYSIWYG Mode</text>
+    <text x="24" y="110" font-family="monospace" font-size="11" fill="#c9d1e0">2. Mode Switcher (M1/M2)</text>
+    <text x="24" y="128" font-family="monospace" font-size="11" fill="#c9d1e0">3. Mermaid & KaTeX</text>
+    <text x="24" y="156" font-family="monospace" font-size="11" fill="#10b9a7">```mermaid</text>
+    <text x="24" y="174" font-family="monospace" font-size="11" fill="#10b9a7">graph LR; A-->B;</text>
+    <text x="24" y="192" font-family="monospace" font-size="11" fill="#10b9a7">```</text>
+
+    <!-- Split Screen Right Pane -->
+    <rect x="274" y="48" width="254" height="198" rx="8" fill="#ffffff"/>
+    <text x="290" y="75" font-family="sans-serif" font-weight="900" font-size="15" fill="#111a2a">MarkChrome 3.0</text>
+    <text x="290" y="94" font-family="sans-serif" font-size="11" fill="#5b6d82">Visual WYSIWYG Canvas</text>
+    
+    <rect x="290" y="118" width="60" height="26" rx="6" fill="#eef7ff" stroke="#0b66d8" stroke-width="1"/>
+    <text x="320" y="135" font-family="sans-serif" font-size="9" font-weight="700" fill="#0b66d8" text-anchor="middle">Mode 1</text>
+    
+    <line x1="350" y1="131" x2="410" y2="131" stroke="#10b9a7" stroke-width="1.5" stroke-dasharray="2,2"/>
+    <polygon points="410,128 415,131 410,134" fill="#10b9a7"/>
+
+    <rect x="415" y="118" width="60" height="26" rx="6" fill="#f0fffc" stroke="#10b9a7" stroke-width="1"/>
+    <text x="445" y="135" font-family="sans-serif" font-size="9" font-weight="700" fill="#10b9a7" text-anchor="middle">Mode 2</text>
+    
+    <rect x="290" y="158" width="220" height="28" rx="4" fill="#f6fbff"/>
+    <text x="400" y="176" font-family="serif" font-style="italic" font-size="12" fill="#0b66d8" text-anchor="middle">E = mc²  |  ∫ f(x)dx</text>
+  </g>
+
+  <!-- MID BANNER STRIP -->
+  <g transform="translate(60, 420)" filter="url(#shadowSm)">
+    <rect x="0" y="0" width="1080" height="60" rx="14" fill="#ffffff"/>
+    <text x="540" y="36" font-family="sans-serif" font-weight="900" font-size="18" fill="#111a2a" letter-spacing="3" text-anchor="middle">UNIVERSAL MARKDOWN WORKSPACE</text>
+  </g>
+
+  <!-- 3x3 FEATURE CARDS -->
+  <!-- ROW 1 -->
+  <g transform="translate(60, 510)">
+    <g filter="url(#shadowSm)">
+      <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff"/>
+      <circle cx="45" cy="45" r="20" fill="#eef7ff"/>
+      <text x="45" y="51" font-size="18" text-anchor="middle">✨</text>
+      <text x="80" y="50" class="c-title">Visual WYSIWYG</text>
+      <text x="20" y="85" class="c-desc">Type directly on rendered preview</text>
+      <text x="20" y="105" class="c-desc">with background MD sync.</text>
+    </g>
+    <g transform="translate(368, 0)" filter="url(#shadowSm)">
+      <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff"/>
+      <circle cx="45" cy="45" r="20" fill="#eef7ff"/>
+      <text x="45" y="51" font-size="18" text-anchor="middle">🔄</text>
+      <text x="80" y="50" class="c-title">Mode Switcher</text>
+      <text x="20" y="85" class="c-desc">Instant toggle between Mode 1</text>
+      <text x="20" y="105" class="c-desc">(Dual Pane) & Mode 2 (Visual).</text>
+    </g>
+    <g transform="translate(736, 0)" filter="url(#shadowSm)">
+      <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff"/>
+      <circle cx="45" cy="45" r="20" fill="#eef7ff"/>
+      <text x="45" y="51" font-size="18" text-anchor="middle">📊</text>
+      <text x="80" y="50" class="c-title">Mermaid & KaTeX</text>
+      <text x="20" y="85" class="c-desc">Render flowcharts, sequence diagrams</text>
+      <text x="20" y="105" class="c-desc">and math formulas live ($E=mc²$).</text>
+    </g>
+  </g>
+
+  <!-- ROW 2 -->
+  <g transform="translate(60, 660)">
+    <g filter="url(#shadowSm)">
+      <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff"/>
+      <circle cx="45" cy="45" r="20" fill="#eef7ff"/>
+      <text x="45" y="51" font-size="18" text-anchor="middle">🎨</text>
+      <text x="80" y="50" class="c-title">Code Highlighting</text>
+      <text x="20" y="85" class="c-desc">Syntax coloring for code blocks with</text>
+      <text x="20" y="105" class="c-desc">one-click copy to clipboard.</text>
+    </g>
+    <g transform="translate(368, 0)" filter="url(#shadowSm)">
+      <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff"/>
+      <circle cx="45" cy="45" r="20" fill="#eef7ff"/>
+      <text x="45" y="51" font-size="18" text-anchor="middle">☰</text>
+      <text x="80" y="50" class="c-title">Outline Sidebar</text>
+      <text x="20" y="85" class="c-desc">Clickable table of contents for</text>
+      <text x="20" y="105" class="c-desc">instant heading navigation.</text>
+    </g>
+    <g transform="translate(736, 0)" filter="url(#shadowSm)">
+      <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff"/>
+      <circle cx="45" cy="45" r="20" fill="#eef7ff"/>
+      <text x="45" y="51" font-size="18" text-anchor="middle">🔎</text>
+      <text x="80" y="50" class="c-title">Find & Replace</text>
+      <text x="20" y="85" class="c-desc">Integrated search and replace</text>
+      <text x="20" y="105" class="c-desc">with Ctrl+F / Ctrl+H support.</text>
+    </g>
+  </g>
+
+  <!-- ROW 3 -->
+  <g transform="translate(60, 810)">
+    <g filter="url(#shadowSm)">
+      <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff"/>
+      <circle cx="45" cy="45" r="20" fill="#eef7ff"/>
+      <text x="45" y="51" font-size="18" text-anchor="middle">🧘</text>
+      <text x="80" y="50" class="c-title">Zen Mode</text>
+      <text x="20" y="85" class="c-desc">Distraction-free full-screen workspace</text>
+      <text x="20" y="105" class="c-desc">for uninterrupted writing.</text>
+    </g>
+    <g transform="translate(368, 0)" filter="url(#shadowSm)">
+      <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff"/>
+      <circle cx="45" cy="45" r="20" fill="#eef7ff"/>
+      <text x="45" y="51" font-size="18" text-anchor="middle">✅</text>
+      <text x="80" y="50" class="c-title">Markdown Validator</text>
+      <text x="20" y="85" class="c-desc">One-click syntax scan for broken</text>
+      <text x="20" y="105" class="c-desc">tables or unclosed code blocks.</text>
+    </g>
+    <g transform="translate(736, 0)" filter="url(#shadowSm)">
+      <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff"/>
+      <circle cx="45" cy="45" r="20" fill="#eef7ff"/>
+      <text x="45" y="51" font-size="18" text-anchor="middle">🌐</text>
+      <text x="80" y="50" class="c-title">Multi-Language & RTL</text>
+      <text x="20" y="85" class="c-desc">Native support for English, Español,</text>
+      <text x="20" y="105" class="c-desc">and Urdu (اردو) layout engine.</text>
+    </g>
+  </g>
+
+  <!-- CHECKMARK STRIP -->
+  <g transform="translate(60, 970)" filter="url(#shadowSm)">
+    <rect x="0" y="0" width="1080" height="50" rx="25" fill="#ffffff"/>
+    <g transform="translate(40, 31)">
+      <circle cx="0" cy="-5" r="9" fill="#10b9a7"/>
+      <path d="M -4 -5 L -1 -2 L 4 -7" stroke="#ffffff" stroke-width="2" fill="none"/>
+      <text x="20" y="0" font-family="sans-serif" font-weight="700" font-size="13" fill="#111a2a">100% Free & Open Source</text>
+    </g>
+    <g transform="translate(310, 31)">
+      <circle cx="0" cy="-5" r="9" fill="#10b9a7"/>
+      <path d="M -4 -5 L -1 -2 L 4 -7" stroke="#ffffff" stroke-width="2" fill="none"/>
+      <text x="20" y="0" font-family="sans-serif" font-weight="700" font-size="13" fill="#111a2a">Zero Server Dependencies</text>
+    </g>
+    <g transform="translate(580, 31)">
+      <circle cx="0" cy="-5" r="9" fill="#10b9a7"/>
+      <path d="M -4 -5 L -1 -2 L 4 -7" stroke="#ffffff" stroke-width="2" fill="none"/>
+      <text x="20" y="0" font-family="sans-serif" font-weight="700" font-size="13" fill="#111a2a">Local Browser Auto-Save</text>
+    </g>
+    <g transform="translate(840, 31)">
+      <circle cx="0" cy="-5" r="9" fill="#10b9a7"/>
+      <path d="M -4 -5 L -1 -2 L 4 -7" stroke="#ffffff" stroke-width="2" fill="none"/>
+      <text x="20" y="0" font-family="sans-serif" font-weight="700" font-size="13" fill="#111a2a">HTML, PDF & MD Export</text>
+    </g>
+  </g>
+
+  <!-- LOWER SECTION CARDS -->
+  <g transform="translate(60, 1050)">
+    <g filter="url(#shadowSm)">
+      <rect x="0" y="0" width="520" height="200" rx="16" fill="#ffffff"/>
+      <g transform="translate(30, 40)">
+        <circle cx="12" cy="0" r="12" fill="#10b9a7"/>
+        <path d="M 7 0 L 10 3 L 17 -4" stroke="#ffffff" stroke-width="2.5" fill="none"/>
+        <text x="36" y="5" class="list-text">Local File Saving & Loading (.md, .txt)</text>
+
+        <circle cx="12" cy="38" r="12" fill="#10b9a7"/>
+        <path d="M 7 38 L 10 41 L 17 34" stroke="#ffffff" stroke-width="2.5" fill="none"/>
+        <text x="36" y="43" class="list-text">Standalone Single HTML File Architecture</text>
+
+        <circle cx="12" cy="76" r="12" fill="#10b9a7"/>
+        <path d="M 7 76 L 10 79 L 17 72" stroke="#ffffff" stroke-width="2.5" fill="none"/>
+        <text x="36" y="81" class="list-text">Direct HTML & PDF Export Capabilities</text>
+
+        <circle cx="12" cy="114" r="12" fill="#10b9a7"/>
+        <path d="M 7 114 L 10 117 L 17 110" stroke="#ffffff" stroke-width="2.5" fill="none"/>
+        <text x="36" y="119" class="list-text">3-Second Local Workspace Auto-Recovery</text>
+      </g>
+    </g>
+
+    <g transform="translate(560, 0)" filter="url(#shadowSm)">
+      <rect x="0" y="0" width="520" height="200" rx="16" fill="#ffffff"/>
+      <g transform="translate(30, 40)">
+        <circle cx="12" cy="0" r="12" fill="#0b66d8"/>
+        <text x="36" y="5" class="list-text">3 Modern Themes (Light, Dark, High Contrast)</text>
+
+        <circle cx="12" cy="38" r="12" fill="#0b66d8"/>
+        <text x="36" y="43" class="list-text">GitHub Flavored Markdown (GFM) Tables & Tasks</text>
+
+        <circle cx="12" cy="76" r="12" fill="#0b66d8"/>
+        <text x="36" y="81" class="list-text">Integrated Search & Replace (Ctrl+F / Ctrl+H)</text>
+
+        <circle cx="12" cy="114" r="12" fill="#0b66d8"/>
+        <text x="36" y="119" class="list-text">Full Screen Zen Mode & Copy Rich Text to Word</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- CTA BUTTONS -->
+  <g transform="translate(60, 1280)">
+    <g filter="url(#shadowSm)">
+      <rect x="0" y="0" width="520" height="70" rx="35" fill="url(#primaryGrad)"/>
+      <text x="260" y="42" class="btn-text" text-anchor="middle">Launch MarkChrome 3.0</text>
+    </g>
+    <g transform="translate(560, 0)" filter="url(#shadowSm)">
+      <rect x="0" y="0" width="520" height="70" rx="35" fill="#ffffff" stroke="#0b66d8" stroke-width="2"/>
+      <text x="260" y="42" class="btn-text-out" text-anchor="middle">Standalone HTML Application</text>
+    </g>
+  </g>
+
+  <!-- FOOTER -->
+  <g transform="translate(0, 1510)">
+    <rect x="0" y="0" width="1200" height="90" fill="#071b30"/>
+    <text x="60" y="52" class="footer-text">Created by <tspan font-weight="800" fill="#ffffff">Amir Ali Tayyab</tspan> | aatayyab@yahoo.com | +1-407-434-1786</text>
+    <text x="1140" y="52" font-family="sans-serif" font-weight="800" font-size="14" fill="#10b9a7" text-anchor="end">github.com/aatayyab/MarkChrome</text>
+  </g>
+</svg>
