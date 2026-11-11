@@ -7,7 +7,7 @@
       .t-desc { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 15px; fill: #5b6d82; }
       
       .c-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 800; font-size: 16px; fill: #111a2a; }
-      .c-desc { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 12.5px; fill: #617084; line-height: 1.4; }
+      .c-desc { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 12.5px; fill: #617084; }
       
       .list-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 700; font-size: 14.5px; fill: #172943; }
       .btn-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 900; font-size: 18px; fill: #ffffff; }
@@ -25,13 +25,6 @@
       <stop offset="0%" stop-color="#0b66d8" />
       <stop offset="100%" stop-color="#10b9a7" />
     </linearGradient>
-
-    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
-      <feDropShadow dx="0" dy="12" stdDeviation="15" flood-color="#09223c" flood-opacity="0.12" />
-    </filter>
-    <filter id="shadowSm" x="-5%" y="-5%" width="110%" height="110%">
-      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#09223c" flood-opacity="0.05" />
-    </filter>
   </defs>
 
   <!-- Base Background -->
@@ -41,7 +34,7 @@
 
   <!-- TOP BAR -->
   <g transform="translate(60, 36)">
-    <rect x="0" y="0" width="56" height="56" rx="14" fill="#ffffff" filter="url(#shadowSm)" />
+    <rect x="0" y="0" width="56" height="56" rx="14" fill="#ffffff" stroke="#dbe9f7" stroke-width="1.5" />
     <rect x="3" y="3" width="50" height="50" rx="12" fill="url(#primaryGrad)" />
     <text x="14" y="36" class="t-brand">M</text>
     <text x="32" y="36" class="t-brand" fill="#ffd166">C</text>
@@ -60,8 +53,8 @@
   </g>
 
   <!-- MOCKUP WINDOW (Top Right) -->
-  <g transform="translate(600, 115)" filter="url(#shadow)">
-    <rect x="0" y="0" width="540" height="260" rx="16" fill="#101d31" />
+  <g transform="translate(600, 115)">
+    <rect x="0" y="0" width="540" height="260" rx="16" fill="#101d31" stroke="#202b42" stroke-width="2" />
     <path d="M 0 16 A 16 16 0 0 1 16 0 L 524 0 A 16 16 0 0 1 540 16 L 540 38 L 0 38 Z" fill="#172943" />
     <circle cx="20" cy="19" r="5" fill="#ff6b6b" />
     <circle cx="36" cy="19" r="5" fill="#ffd166" />
@@ -102,32 +95,32 @@
   </g>
 
   <!-- MID BANNER STRIP -->
-  <g transform="translate(60, 420)" filter="url(#shadowSm)">
-    <rect x="0" y="0" width="1080" height="60" rx="14" fill="#ffffff"/>
+  <g transform="translate(60, 420)">
+    <rect x="0" y="0" width="1080" height="60" rx="14" fill="#ffffff" stroke="#dbe9f7" stroke-width="1.5"/>
     <text x="540" y="36" font-family="sans-serif" font-weight="900" font-size="18" fill="#111a2a" letter-spacing="3" text-anchor="middle">UNIVERSAL MARKDOWN WORKSPACE</text>
   </g>
 
   <!-- 3x3 FEATURE CARDS -->
   <!-- ROW 1 -->
   <g transform="translate(60, 510)">
-    <g filter="url(#shadowSm)">
-      <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff"/>
-      <circle cx="45" cy="45" r="20" fill="#eef7ff"/>
-      <text x="45" y="51" font-size="18" text-anchor="middle">✨</text>
-      <text x="80" y="50" class="c-title">Visual WYSIWYG</text>
-      <text x="20" y="85" class="c-desc">Type directly on rendered preview</text>
-      <text x="20" y="105" class="c-desc">with background MD sync.</text>
-    </g>
-    <g transform="translate(368, 0)" filter="url(#shadowSm)">
-      <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff"/>
+    <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff" stroke="#dbe9f7" stroke-width="1"/>
+    <circle cx="45" cy="45" r="20" fill="#eef7ff"/>
+    <text x="45" y="51" font-size="18" text-anchor="middle">✨</text>
+    <text x="80" y="50" class="c-title">Visual WYSIWYG</text>
+    <text x="20" y="85" class="c-desc">Type directly on rendered preview</text>
+    <text x="20" y="105" class="c-desc">with background MD sync.</text>
+
+    <g transform="translate(368, 0)">
+      <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff" stroke="#dbe9f7" stroke-width="1"/>
       <circle cx="45" cy="45" r="20" fill="#eef7ff"/>
       <text x="45" y="51" font-size="18" text-anchor="middle">🔄</text>
       <text x="80" y="50" class="c-title">Mode Switcher</text>
       <text x="20" y="85" class="c-desc">Instant toggle between Mode 1</text>
       <text x="20" y="105" class="c-desc">(Dual Pane) & Mode 2 (Visual).</text>
     </g>
-    <g transform="translate(736, 0)" filter="url(#shadowSm)">
-      <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff"/>
+
+    <g transform="translate(736, 0)">
+      <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff" stroke="#dbe9f7" stroke-width="1"/>
       <circle cx="45" cy="45" r="20" fill="#eef7ff"/>
       <text x="45" y="51" font-size="18" text-anchor="middle">📊</text>
       <text x="80" y="50" class="c-title">Mermaid & KaTeX</text>
@@ -138,24 +131,24 @@
 
   <!-- ROW 2 -->
   <g transform="translate(60, 660)">
-    <g filter="url(#shadowSm)">
-      <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff"/>
-      <circle cx="45" cy="45" r="20" fill="#eef7ff"/>
-      <text x="45" y="51" font-size="18" text-anchor="middle">🎨</text>
-      <text x="80" y="50" class="c-title">Code Highlighting</text>
-      <text x="20" y="85" class="c-desc">Syntax coloring for code blocks with</text>
-      <text x="20" y="105" class="c-desc">one-click copy to clipboard.</text>
-    </g>
-    <g transform="translate(368, 0)" filter="url(#shadowSm)">
-      <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff"/>
+    <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff" stroke="#dbe9f7" stroke-width="1"/>
+    <circle cx="45" cy="45" r="20" fill="#eef7ff"/>
+    <text x="45" y="51" font-size="18" text-anchor="middle">🎨</text>
+    <text x="80" y="50" class="c-title">Code Highlighting</text>
+    <text x="20" y="85" class="c-desc">Syntax coloring for code blocks with</text>
+    <text x="20" y="105" class="c-desc">one-click copy to clipboard.</text>
+
+    <g transform="translate(368, 0)">
+      <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff" stroke="#dbe9f7" stroke-width="1"/>
       <circle cx="45" cy="45" r="20" fill="#eef7ff"/>
       <text x="45" y="51" font-size="18" text-anchor="middle">☰</text>
       <text x="80" y="50" class="c-title">Outline Sidebar</text>
       <text x="20" y="85" class="c-desc">Clickable table of contents for</text>
       <text x="20" y="105" class="c-desc">instant heading navigation.</text>
     </g>
-    <g transform="translate(736, 0)" filter="url(#shadowSm)">
-      <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff"/>
+
+    <g transform="translate(736, 0)">
+      <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff" stroke="#dbe9f7" stroke-width="1"/>
       <circle cx="45" cy="45" r="20" fill="#eef7ff"/>
       <text x="45" y="51" font-size="18" text-anchor="middle">🔎</text>
       <text x="80" y="50" class="c-title">Find & Replace</text>
@@ -166,24 +159,24 @@
 
   <!-- ROW 3 -->
   <g transform="translate(60, 810)">
-    <g filter="url(#shadowSm)">
-      <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff"/>
-      <circle cx="45" cy="45" r="20" fill="#eef7ff"/>
-      <text x="45" y="51" font-size="18" text-anchor="middle">🧘</text>
-      <text x="80" y="50" class="c-title">Zen Mode</text>
-      <text x="20" y="85" class="c-desc">Distraction-free full-screen workspace</text>
-      <text x="20" y="105" class="c-desc">for uninterrupted writing.</text>
-    </g>
-    <g transform="translate(368, 0)" filter="url(#shadowSm)">
-      <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff"/>
+    <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff" stroke="#dbe9f7" stroke-width="1"/>
+    <circle cx="45" cy="45" r="20" fill="#eef7ff"/>
+    <text x="45" y="51" font-size="18" text-anchor="middle">🧘</text>
+    <text x="80" y="50" class="c-title">Zen Mode</text>
+    <text x="20" y="85" class="c-desc">Distraction-free full-screen workspace</text>
+    <text x="20" y="105" class="c-desc">for uninterrupted writing.</text>
+
+    <g transform="translate(368, 0)">
+      <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff" stroke="#dbe9f7" stroke-width="1"/>
       <circle cx="45" cy="45" r="20" fill="#eef7ff"/>
       <text x="45" y="51" font-size="18" text-anchor="middle">✅</text>
       <text x="80" y="50" class="c-title">Markdown Validator</text>
       <text x="20" y="85" class="c-desc">One-click syntax scan for broken</text>
       <text x="20" y="105" class="c-desc">tables or unclosed code blocks.</text>
     </g>
-    <g transform="translate(736, 0)" filter="url(#shadowSm)">
-      <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff"/>
+
+    <g transform="translate(736, 0)">
+      <rect x="0" y="0" width="344" height="130" rx="14" fill="#ffffff" stroke="#dbe9f7" stroke-width="1"/>
       <circle cx="45" cy="45" r="20" fill="#eef7ff"/>
       <text x="45" y="51" font-size="18" text-anchor="middle">🌐</text>
       <text x="80" y="50" class="c-title">Multi-Language & RTL</text>
@@ -193,8 +186,8 @@
   </g>
 
   <!-- CHECKMARK STRIP -->
-  <g transform="translate(60, 970)" filter="url(#shadowSm)">
-    <rect x="0" y="0" width="1080" height="50" rx="25" fill="#ffffff"/>
+  <g transform="translate(60, 970)">
+    <rect x="0" y="0" width="1080" height="50" rx="25" fill="#ffffff" stroke="#dbe9f7" stroke-width="1.5"/>
     <g transform="translate(40, 31)">
       <circle cx="0" cy="-5" r="9" fill="#10b9a7"/>
       <path d="M -4 -5 L -1 -2 L 4 -7" stroke="#ffffff" stroke-width="2" fill="none"/>
@@ -219,29 +212,27 @@
 
   <!-- LOWER SECTION CARDS -->
   <g transform="translate(60, 1050)">
-    <g filter="url(#shadowSm)">
-      <rect x="0" y="0" width="520" height="200" rx="16" fill="#ffffff"/>
-      <g transform="translate(30, 40)">
-        <circle cx="12" cy="0" r="12" fill="#10b9a7"/>
-        <path d="M 7 0 L 10 3 L 17 -4" stroke="#ffffff" stroke-width="2.5" fill="none"/>
-        <text x="36" y="5" class="list-text">Local File Saving & Loading (.md, .txt)</text>
+    <rect x="0" y="0" width="520" height="200" rx="16" fill="#ffffff" stroke="#dbe9f7" stroke-width="1.5"/>
+    <g transform="translate(30, 40)">
+      <circle cx="12" cy="0" r="12" fill="#10b9a7"/>
+      <path d="M 7 0 L 10 3 L 17 -4" stroke="#ffffff" stroke-width="2.5" fill="none"/>
+      <text x="36" y="5" class="list-text">Local File Saving & Loading (.md, .txt)</text>
 
-        <circle cx="12" cy="38" r="12" fill="#10b9a7"/>
-        <path d="M 7 38 L 10 41 L 17 34" stroke="#ffffff" stroke-width="2.5" fill="none"/>
-        <text x="36" y="43" class="list-text">Standalone Single HTML File Architecture</text>
+      <circle cx="12" cy="38" r="12" fill="#10b9a7"/>
+      <path d="M 7 38 L 10 41 L 17 34" stroke="#ffffff" stroke-width="2.5" fill="none"/>
+      <text x="36" y="43" class="list-text">Standalone Single HTML File Architecture</text>
 
-        <circle cx="12" cy="76" r="12" fill="#10b9a7"/>
-        <path d="M 7 76 L 10 79 L 17 72" stroke="#ffffff" stroke-width="2.5" fill="none"/>
-        <text x="36" y="81" class="list-text">Direct HTML & PDF Export Capabilities</text>
+      <circle cx="12" cy="76" r="12" fill="#10b9a7"/>
+      <path d="M 7 76 L 10 79 L 17 72" stroke="#ffffff" stroke-width="2.5" fill="none"/>
+      <text x="36" y="81" class="list-text">Direct HTML & PDF Export Capabilities</text>
 
-        <circle cx="12" cy="114" r="12" fill="#10b9a7"/>
-        <path d="M 7 114 L 10 117 L 17 110" stroke="#ffffff" stroke-width="2.5" fill="none"/>
-        <text x="36" y="119" class="list-text">3-Second Local Workspace Auto-Recovery</text>
-      </g>
+      <circle cx="12" cy="114" r="12" fill="#10b9a7"/>
+      <path d="M 7 114 L 10 117 L 17 110" stroke="#ffffff" stroke-width="2.5" fill="none"/>
+      <text x="36" y="119" class="list-text">3-Second Local Workspace Auto-Recovery</text>
     </g>
 
-    <g transform="translate(560, 0)" filter="url(#shadowSm)">
-      <rect x="0" y="0" width="520" height="200" rx="16" fill="#ffffff"/>
+    <g transform="translate(560, 0)">
+      <rect x="0" y="0" width="520" height="200" rx="16" fill="#ffffff" stroke="#dbe9f7" stroke-width="1.5"/>
       <g transform="translate(30, 40)">
         <circle cx="12" cy="0" r="12" fill="#0b66d8"/>
         <text x="36" y="5" class="list-text">3 Modern Themes (Light, Dark, High Contrast)</text>
@@ -260,11 +251,10 @@
 
   <!-- CTA BUTTONS -->
   <g transform="translate(60, 1280)">
-    <g filter="url(#shadowSm)">
-      <rect x="0" y="0" width="520" height="70" rx="35" fill="url(#primaryGrad)"/>
-      <text x="260" y="42" class="btn-text" text-anchor="middle">Launch MarkChrome 3.0</text>
-    </g>
-    <g transform="translate(560, 0)" filter="url(#shadowSm)">
+    <rect x="0" y="0" width="520" height="70" rx="35" fill="url(#primaryGrad)"/>
+    <text x="260" y="42" class="btn-text" text-anchor="middle">Launch MarkChrome 3.0</text>
+
+    <g transform="translate(560, 0)">
       <rect x="0" y="0" width="520" height="70" rx="35" fill="#ffffff" stroke="#0b66d8" stroke-width="2"/>
       <text x="260" y="42" class="btn-text-out" text-anchor="middle">Standalone HTML Application</text>
     </g>
