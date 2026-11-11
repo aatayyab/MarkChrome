@@ -1,0 +1,203 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1810" viewBox="0 0 1280 1810">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1280" y2="1810" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f8fbff"/><stop offset=".6" stop-color="#eef7ff"/><stop offset="1" stop-color="#e9fffb"/></linearGradient>
+<linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0b66d8"/><stop offset=".55" stop-color="#0f8eff"/><stop offset="1" stop-color="#10c6b4"/></linearGradient>
+<linearGradient id="gt" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0b66d8"/><stop offset="1" stop-color="#0a9d92"/></linearGradient>
+<filter id="sh" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#0a2440" flood-opacity=".10"/></filter>
+<filter id="shb" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="22" stdDeviation="22" flood-color="#0a2440" flood-opacity=".22"/></filter>
+</defs>
+<rect width="1280" height="1810" fill="url(#bg)"/>
+<circle cx="1230" cy="-30" r="330" fill="#dff7ff" opacity=".7"/>
+<circle cx="20" cy="1790" r="300" fill="#dffaf4" opacity=".8"/>
+
+<circle cx="30" cy="30" r="4" fill="#b9d8f5" opacity=".7"/>
+<circle cx="56" cy="30" r="4" fill="#b9d8f5" opacity=".7"/>
+<circle cx="82" cy="30" r="4" fill="#b9d8f5" opacity=".7"/>
+<circle cx="108" cy="30" r="4" fill="#b9d8f5" opacity=".7"/>
+<circle cx="134" cy="30" r="4" fill="#b9d8f5" opacity=".7"/>
+<circle cx="160" cy="30" r="4" fill="#b9d8f5" opacity=".7"/>
+<circle cx="30" cy="56" r="4" fill="#b9d8f5" opacity=".7"/>
+<circle cx="56" cy="56" r="4" fill="#b9d8f5" opacity=".7"/>
+<circle cx="82" cy="56" r="4" fill="#b9d8f5" opacity=".7"/>
+<circle cx="108" cy="56" r="4" fill="#b9d8f5" opacity=".7"/>
+<circle cx="134" cy="56" r="4" fill="#b9d8f5" opacity=".7"/>
+<circle cx="160" cy="56" r="4" fill="#b9d8f5" opacity=".7"/>
+<circle cx="30" cy="82" r="4" fill="#b9d8f5" opacity=".7"/>
+<circle cx="56" cy="82" r="4" fill="#b9d8f5" opacity=".7"/>
+<circle cx="82" cy="82" r="4" fill="#b9d8f5" opacity=".7"/>
+<circle cx="108" cy="82" r="4" fill="#b9d8f5" opacity=".7"/>
+<circle cx="134" cy="82" r="4" fill="#b9d8f5" opacity=".7"/>
+<circle cx="160" cy="82" r="4" fill="#b9d8f5" opacity=".7"/>
+<circle cx="30" cy="108" r="4" fill="#b9d8f5" opacity=".7"/>
+<circle cx="56" cy="108" r="4" fill="#b9d8f5" opacity=".7"/>
+<circle cx="82" cy="108" r="4" fill="#b9d8f5" opacity=".7"/>
+<circle cx="108" cy="108" r="4" fill="#b9d8f5" opacity=".7"/>
+<circle cx="134" cy="108" r="4" fill="#b9d8f5" opacity=".7"/>
+<circle cx="160" cy="108" r="4" fill="#b9d8f5" opacity=".7"/>
+<g transform="translate(64 38) scale(.27)">
+  <defs>
+    <linearGradient id="ig" x1="70" y1="80" x2="450" y2="430" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0b66d8"/>
+      <stop offset="0.52" stop-color="#0f8eff"/>
+      <stop offset="1" stop-color="#10c6b4"/>
+    </linearGradient>
+    <linearGradient id="idark" x1="120" y1="120" x2="380" y2="380" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#101d31"/>
+      <stop offset="1" stop-color="#162943"/>
+    </linearGradient>
+    <filter id="ishadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="20" stdDeviation="18" flood-color="#08213d" flood-opacity="0.24"/>
+    </filter>
+  </defs>
+  <rect x="52" y="70" width="408" height="336" rx="52" fill="#ffffff" filter="url(#ishadow)"/>
+  <rect x="52" y="70" width="408" height="76" rx="52" fill="url(#idark)"/>
+  <path d="M52 122 h408 v38 h-408 z" fill="url(#idark)"/>
+  <circle cx="104" cy="110" r="13" fill="#ff6b6b"/>
+  <circle cx="144" cy="110" r="13" fill="#ffd166"/>
+  <circle cx="184" cy="110" r="13" fill="#06d6a0"/>
+  <rect x="88" y="186" width="158" height="162" rx="24" fill="#f5f9ff" stroke="#d7e6fa" stroke-width="4"/>
+  <rect x="266" y="186" width="158" height="162" rx="24" fill="#f5fffc" stroke="#d5f2ec" stroke-width="4"/>
+  <path d="M123 288 v-72 h27 l18 28 18-28 h27 v72 h-27 v-32 l-18 27-18-27 v32z" fill="url(#ig)"/>
+  <path d="M332 228 c-33 0-60 26-60 60s27 60 60 60c26 0 48-16 56-39h-34c-5 8-13 13-23 13-18 0-31-14-31-34s13-34 31-34c10 0 19 5 24 14h34c-8-24-30-40-57-40z" fill="url(#ig)"/>
+  <path d="M104 376 h304" stroke="url(#ig)" stroke-width="18" stroke-linecap="round"/>
+  <path d="M258 376 l39-34" stroke="#10c6b4" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="214" y="118" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="900" font-size="92" fill="#111a2a" letter-spacing="-2">Mark<tspan fill="#0b7ff0">Chrome</tspan></text>
+<rect x="1000" y="64" width="216" height="58" rx="29" fill="url(#g)"/>
+<text x="1108" y="102" text-anchor="middle" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="900" font-size="27" fill="#fff" letter-spacing="1">RELEASE 2.0</text>
+<rect x="64" y="196" width="8" height="98" rx="4" fill="#0f8eff"/>
+<text x="92" y="228" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="800" font-size="31" fill="#0b66d8">Universal Markdown workspace</text>
+<text x="92" y="274" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="900" font-size="36" fill="#111a2a">in your browser. Free. Private.</text>
+<text x="64" y="340" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="23" fill="#42526a">Write notes, docs, README files and technical</text>
+<text x="64" y="374" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="23" fill="#42526a">articles with live preview, diagrams, math and</text>
+<text x="64" y="408" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="23" fill="#42526a">one-click PDF export. No account. No install.</text>
+<g transform="translate(640 176)" filter="url(#shb)">
+<rect width="576" height="300" rx="24" fill="#101d31"/><rect width="576" height="48" rx="24" fill="#17263e"/><rect y="24" width="576" height="24" fill="#17263e"/>
+<circle cx="30" cy="24" r="8" fill="#ff6b6b"/><circle cx="56" cy="24" r="8" fill="#ffd166"/><circle cx="82" cy="24" r="8" fill="#06d6a0"/>
+<text x="288" y="30" text-anchor="middle" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="14" fill="#7a869a">notes.md — MarkChrome</text>
+<rect x="20" y="66" width="262" height="214" rx="14" fill="#202b42"/><rect x="294" y="66" width="262" height="214" rx="14" fill="#fff"/>
+<text x="38" y="98" font-family="Consolas, 'DejaVu Sans Mono', monospace" font-size="16" fill="#4f8ef7"># Release 2.0</text>
+<text x="38" y="148" font-family="Consolas, 'DejaVu Sans Mono', monospace" font-size="16" fill="#c9d1e0">$E = mc^2$</text>
+<text x="38" y="198" font-family="Consolas, 'DejaVu Sans Mono', monospace" font-size="16" fill="#2ecc71">```mermaid</text>
+<text x="38" y="223" font-family="Consolas, 'DejaVu Sans Mono', monospace" font-size="16" fill="#abb2bf">graph TD</text>
+<text x="38" y="248" font-family="Consolas, 'DejaVu Sans Mono', monospace" font-size="16" fill="#abb2bf">  A --&gt; B</text>
+<text x="38" y="273" font-family="Consolas, 'DejaVu Sans Mono', monospace" font-size="16" fill="#2ecc71">```</text>
+<text x="312" y="100" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="900" font-size="24" fill="#111a2a">Release 2.0</text>
+<text x="312" y="150" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-style="italic" font-size="26" fill="#2c3340">E = mc²</text>
+<rect x="318" y="184" width="86" height="34" rx="8" fill="#e8f2ff" stroke="#0f8eff" stroke-width="2"/><text x="361" y="207" text-anchor="middle" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="15" font-weight="700" fill="#0b66d8">Write</text>
+<path d="M404 201 h34" stroke="#0f8eff" stroke-width="3"/><path d="M438 201 l-8 -6 v12z" fill="#0f8eff"/>
+<rect x="442" y="184" width="100" height="34" rx="8" fill="#e6fbf7" stroke="#10c6b4" stroke-width="2"/><text x="492" y="207" text-anchor="middle" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="15" font-weight="700" fill="#0a9d92">Publish</text>
+<rect x="318" y="240" width="200" height="10" rx="5" fill="#dce7f5"/><rect x="318" y="258" width="150" height="10" rx="5" fill="#dce7f5"/>
+</g>
+<line x1="64" y1="550" x2="528.0" y2="550" stroke="#b9d8f5" stroke-width="2"/><line x1="752.0" y1="550" x2="1216" y2="550" stroke="#b9d8f5" stroke-width="2"/>
+<text x="640" y="560" text-anchor="middle" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="900" font-size="30" fill="#0b66d8" letter-spacing="1">KEY FEATURES</text>
+<g filter="url(#sh)"><rect x="64" y="592" width="370" height="160" rx="22" fill="#fff" stroke="#dbe9f7" stroke-width="2"/></g>
+<circle cx="118" cy="646" r="32" fill="#eef6ff"/>
+<text x="118" y="658" text-anchor="middle" font-family="'DejaVu Sans', Arial, sans-serif" font-weight="700" font-size="28" fill="#0b66d8">⇄</text>
+<text x="166" y="644" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="900" font-size="23" fill="#0b66d8">Live preview</text>
+<text x="96" y="700" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="19" fill="#2c3a4f">Type left, see the finished</text>
+<text x="96" y="728" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="19" fill="#2c3a4f">page right, scrolling in sync.</text>
+<g filter="url(#sh)"><rect x="459" y="592" width="370" height="160" rx="22" fill="#fff" stroke="#dbe9f7" stroke-width="2"/></g>
+<circle cx="513" cy="646" r="32" fill="#eef6ff"/>
+<text x="513" y="658" text-anchor="middle" font-family="'DejaVu Sans', Arial, sans-serif" font-weight="700" font-size="28" fill="#0a9d92">◇</text>
+<text x="561" y="644" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="900" font-size="23" fill="#0a9d92">Mermaid diagrams</text>
+<text x="491" y="700" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="19" fill="#2c3a4f">Flowcharts and sequence graphs</text>
+<text x="491" y="728" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="19" fill="#2c3a4f">from plain text blocks.</text>
+<g filter="url(#sh)"><rect x="854" y="592" width="370" height="160" rx="22" fill="#fff" stroke="#dbe9f7" stroke-width="2"/></g>
+<circle cx="908" cy="646" r="32" fill="#eef6ff"/>
+<text x="908" y="658" text-anchor="middle" font-family="'DejaVu Sans', Arial, sans-serif" font-weight="700" font-size="28" fill="#0b66d8">∑</text>
+<text x="956" y="644" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="900" font-size="23" fill="#0b66d8">KaTeX math</text>
+<text x="886" y="700" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="19" fill="#2c3a4f">Inline and block formulas,</text>
+<text x="886" y="728" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="19" fill="#2c3a4f">beautifully typeset.</text>
+<g filter="url(#sh)"><rect x="64" y="774" width="370" height="160" rx="22" fill="#fff" stroke="#dbe9f7" stroke-width="2"/></g>
+<circle cx="118" cy="828" r="32" fill="#eef6ff"/>
+<text x="118" y="840" text-anchor="middle" font-family="'DejaVu Sans', Arial, sans-serif" font-weight="700" font-size="24" fill="#0b66d8">{ }</text>
+<text x="166" y="826" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="900" font-size="23" fill="#0b66d8">Code highlighting</text>
+<text x="96" y="882" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="19" fill="#2c3a4f">Colour for dozens of languages</text>
+<text x="96" y="910" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="19" fill="#2c3a4f">with a one-click copy button.</text>
+<g filter="url(#sh)"><rect x="459" y="774" width="370" height="160" rx="22" fill="#fff" stroke="#dbe9f7" stroke-width="2"/></g>
+<circle cx="513" cy="828" r="32" fill="#eef6ff"/>
+<text x="513" y="840" text-anchor="middle" font-family="'DejaVu Sans', Arial, sans-serif" font-weight="700" font-size="28" fill="#0a9d92">☰</text>
+<text x="561" y="826" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="900" font-size="23" fill="#0a9d92">Outline sidebar</text>
+<text x="491" y="882" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="19" fill="#2c3a4f">Clickable table of contents;</text>
+<text x="491" y="910" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="19" fill="#2c3a4f">jump to any heading.</text>
+<g filter="url(#sh)"><rect x="854" y="774" width="370" height="160" rx="22" fill="#fff" stroke="#dbe9f7" stroke-width="2"/></g>
+<circle cx="908" cy="828" r="32" fill="#eef6ff"/>
+<text x="908" y="840" text-anchor="middle" font-family="'DejaVu Sans', Arial, sans-serif" font-weight="700" font-size="24" fill="#0b66d8">Aa</text>
+<text x="956" y="826" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="900" font-size="23" fill="#0b66d8">Find &amp; Replace</text>
+<text x="886" y="882" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="19" fill="#2c3a4f">Find next, replace, replace all</text>
+<text x="886" y="910" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="19" fill="#2c3a4f">with Ctrl+F / Ctrl+H.</text>
+<g filter="url(#sh)"><rect x="64" y="956" width="370" height="160" rx="22" fill="#fff" stroke="#dbe9f7" stroke-width="2"/></g>
+<circle cx="118" cy="1010" r="32" fill="#eef6ff"/>
+<text x="118" y="1022" text-anchor="middle" font-family="'DejaVu Sans', Arial, sans-serif" font-weight="700" font-size="28" fill="#0b66d8">Z</text>
+<text x="166" y="1008" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="900" font-size="23" fill="#0b66d8">Zen mode</text>
+<text x="96" y="1064" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="19" fill="#2c3a4f">Hide every menu and focus.</text>
+<text x="96" y="1092" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="19" fill="#2c3a4f">Esc to return.</text>
+<g filter="url(#sh)"><rect x="459" y="956" width="370" height="160" rx="22" fill="#fff" stroke="#dbe9f7" stroke-width="2"/></g>
+<circle cx="513" cy="1010" r="32" fill="#eef6ff"/>
+<text x="513" y="1022" text-anchor="middle" font-family="'DejaVu Sans', Arial, sans-serif" font-weight="700" font-size="28" fill="#0a9d92">✓</text>
+<text x="561" y="1008" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="900" font-size="23" fill="#0a9d92">Markdown validator</text>
+<text x="491" y="1064" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="19" fill="#2c3a4f">Catches unclosed code blocks,</text>
+<text x="491" y="1092" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="19" fill="#2c3a4f">stray * and broken tables.</text>
+<g filter="url(#sh)"><rect x="854" y="956" width="370" height="160" rx="22" fill="#fff" stroke="#dbe9f7" stroke-width="2"/></g>
+<circle cx="908" cy="1010" r="32" fill="#eef6ff"/>
+<text x="908" y="1022" text-anchor="middle" font-family="'DejaVu Sans', Arial, sans-serif" font-weight="700" font-size="28" fill="#0b66d8">⇪</text>
+<text x="956" y="1008" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="900" font-size="23" fill="#0b66d8">Export &amp; copy</text>
+<text x="886" y="1064" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="19" fill="#2c3a4f">Save .md, HTML, PDF — or copy</text>
+<text x="886" y="1092" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="19" fill="#2c3a4f">rich text into Word or email.</text>
+<rect x="64" y="1142" width="1152" height="64" rx="32" fill="#fff" stroke="#dbe9f7" stroke-width="2"/>
+<circle cx="104" cy="1174" r="9" fill="#10b9a7"/><path d="M99 1174 l4 4 l7 -8" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="122" y="1181" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="700" font-size="17" fill="#111a2a">3 themes incl. high contrast</text>
+<circle cx="374" cy="1174" r="9" fill="#10b9a7"/><path d="M369 1174 l4 4 l7 -8" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="392" y="1181" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="700" font-size="17" fill="#111a2a">English · Español · Urdu (RTL)</text>
+<circle cx="672" cy="1174" r="9" fill="#10b9a7"/><path d="M667 1174 l4 4 l7 -8" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="690" y="1181" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="700" font-size="17" fill="#111a2a">Auto-recovery</text>
+<circle cx="894" cy="1174" r="9" fill="#10b9a7"/><path d="M889 1174 l4 4 l7 -8" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="912" y="1181" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="700" font-size="17" fill="#111a2a">Paste screenshots</text>
+<line x1="64" y1="1252" x2="250" y2="1252" stroke="#b9d8f5" stroke-width="2"/><line x1="438" y1="1252" x2="624" y2="1252" stroke="#b9d8f5" stroke-width="2"/>
+<text x="344" y="1262" text-anchor="middle" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="900" font-size="30" fill="#0a9d92" letter-spacing="1">BENEFITS</text>
+<g filter="url(#sh)"><rect x="64" y="1290" width="560" height="270" rx="24" fill="#fff" stroke="#dbe9f7" stroke-width="2"/></g>
+<circle cx="112" cy="1332" r="20" fill="#0a9d92"/><path d="M103 1332 l6 6 l11 -12" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="148" y="1339" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="21" fill="#111a2a">No account, no server, no install</text>
+<line x1="148" y1="1363" x2="600" y2="1363" stroke="#e4eef8" stroke-width="2"/>
+<circle cx="112" cy="1394" r="20" fill="#0a9d92"/><path d="M103 1394 l6 6 l11 -12" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="148" y="1401" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="21" fill="#111a2a">100% private — files stay on your device</text>
+<line x1="148" y1="1425" x2="600" y2="1425" stroke="#e4eef8" stroke-width="2"/>
+<circle cx="112" cy="1456" r="20" fill="#0a9d92"/><path d="M103 1456 l6 6 l11 -12" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="148" y="1463" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="21" fill="#111a2a">Perfect for README files and blog drafts</text>
+<line x1="148" y1="1487" x2="600" y2="1487" stroke="#e4eef8" stroke-width="2"/>
+<circle cx="112" cy="1518" r="20" fill="#0a9d92"/><path d="M103 1518 l6 6 l11 -12" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="148" y="1525" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="21" fill="#111a2a">Clean preview before you publish</text>
+<line x1="656" y1="1252" x2="790" y2="1252" stroke="#b9d8f5" stroke-width="2"/>
+<text x="936" y="1262" text-anchor="middle" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="900" font-size="30" fill="#0b66d8" letter-spacing="1">HOW IT WORKS</text>
+<line x1="1082" y1="1252" x2="1216" y2="1252" stroke="#b9d8f5" stroke-width="2"/>
+<g filter="url(#sh)"><rect x="656" y="1290" width="560" height="270" rx="24" fill="#fff" stroke="#dbe9f7" stroke-width="2"/></g>
+<circle cx="704" cy="1332" r="20" fill="#0b66d8"/><text x="704" y="1340" text-anchor="middle" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="900" font-size="22" fill="#fff">1</text>
+<text x="740" y="1339" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="21" fill="#111a2a">Open MarkChrome in your browser</text>
+<line x1="740" y1="1363" x2="1190" y2="1363" stroke="#e4eef8" stroke-width="2"/>
+<circle cx="704" cy="1394" r="20" fill="#0b66d8"/><text x="704" y="1402" text-anchor="middle" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="900" font-size="22" fill="#fff">2</text>
+<text x="740" y="1401" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="21" fill="#111a2a">Write Markdown on the left</text>
+<line x1="740" y1="1425" x2="1190" y2="1425" stroke="#e4eef8" stroke-width="2"/>
+<circle cx="704" cy="1456" r="20" fill="#0b66d8"/><text x="704" y="1464" text-anchor="middle" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="900" font-size="22" fill="#fff">3</text>
+<text x="740" y="1463" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="21" fill="#111a2a">Watch the live preview on the right</text>
+<line x1="740" y1="1487" x2="1190" y2="1487" stroke="#e4eef8" stroke-width="2"/>
+<circle cx="704" cy="1518" r="20" fill="#0b66d8"/><text x="704" y="1526" text-anchor="middle" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="900" font-size="22" fill="#fff">4</text>
+<text x="740" y="1525" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="21" fill="#111a2a">Save .md, or export HTML / PDF</text>
+<g filter="url(#sh)"><rect x="64" y="1596" width="560" height="112" rx="20" fill="#fff" stroke="#dbe9f7" stroke-width="2"/></g>
+<path d="M64 1616 a20 20 0 0 1 20 -20 h520 a20 20 0 0 1 20 20 v28 h-560z" fill="#0b66d8"/>
+<text x="88" y="1632" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="900" font-size="22" fill="#fff" letter-spacing="1">SHORTCUTS</text>
+<text x="88" y="1670" font-family="Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" font-size="17" fill="#111a2a">Ctrl+S</text><text x="176" y="1670" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="17" fill="#2c3a4f">Save</text>
+<text x="260" y="1670" font-family="Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" font-size="17" fill="#111a2a">Ctrl+F</text><text x="348" y="1670" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="17" fill="#2c3a4f">Find &amp; Replace</text>
+<text x="88" y="1696" font-family="Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" font-size="17" fill="#111a2a">Ctrl+B/I/K</text><text x="214" y="1696" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="17" fill="#2c3a4f">Bold, italic, link</text>
+<text x="400" y="1696" font-family="Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" font-size="17" fill="#111a2a">Esc</text><text x="446" y="1696" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="17" fill="#2c3a4f">Exit Zen</text>
+<g filter="url(#sh)"><rect x="656" y="1596" width="560" height="112" rx="20" fill="#fff" stroke="#dbe9f7" stroke-width="2"/></g>
+<path d="M656 1616 a20 20 0 0 1 20 -20 h520 a20 20 0 0 1 20 20 v28 h-560z" fill="#0a9d92"/>
+<text x="680" y="1632" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="900" font-size="22" fill="#fff" letter-spacing="1">REQUIREMENTS</text>
+<circle cx="692" cy="1668" r="9" fill="#10b9a7"/><path d="M687 1668 l4 4 l7 -8" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="712" y="1674" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="17" fill="#2c3a4f">Any modern browser: Chrome, Edge, Firefox, Safari</text>
+<circle cx="692" cy="1696" r="9" fill="#10b9a7"/><path d="M687 1696 l4 4 l7 -8" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="712" y="1702" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="17" fill="#2c3a4f">Internet connection to load diagram, math &amp; PDF tools</text>
+<rect x="0" y="1738" width="1280" height="72" fill="url(#g)"/>
+<text x="64" y="1768" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-weight="900" font-size="24" fill="#fff">Write clearly. Preview confidently.  </text>
+<text x="64" y="1794" font-family="Arial, Helvetica, 'Liberation Sans', 'DejaVu Sans', sans-serif" font-size="17" fill="#fff">Launch: https://aatayyab.github.io/MarkChrome  •  Amir Ali Tayyab  •  aatayyab@yahoo.com  •  +1-407-434-1786</text>
+</svg>
