@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MarkChrome — Universal Markdown Workspace</title>
+    <title>MarkChrome — Universal Markdown Workspace & Visual Editor</title>
     <!-- CDN Libraries with fail-safe script loading -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.1/marked.min.js"></script>
@@ -70,8 +70,7 @@
             overflow: hidden;
         }
 
-
-        /* Floating exit button, only visible in Zen mode (needed on phones: no Esc key) */
+        /* Floating exit button, only visible in Zen mode */
         #zen-exit {
             display: none;
             position: fixed;
@@ -176,6 +175,7 @@
             transition: background 0.12s, color 0.12s;
         }
         .tb-btn:hover { background: var(--accent); color: #fff; }
+        .tb-btn.active-mode { background: #8e44ad; color: #fff; }
 
         .btn {
             border: none;
@@ -348,7 +348,7 @@
         #editor::selection { background: rgba(79,142,247,0.25); }
         #editor:focus { box-shadow: inset 2px 0 0 var(--accent); }
 
-        /* ─── PREVIEW (READ-ONLY CLEAN STYLING) ───────────────── */
+        /* ─── PREVIEW (READ-ONLY or CONTENTEDITABLE) ───────────── */
         #preview-pane { background: var(--preview-bg); display: flex; flex-direction: column; }
 
         #preview {
@@ -622,6 +622,10 @@
         <div id="file-status" title="Current file">markchrome.md</div>
     </div>
 
+    <!-- Mode Toggle Switch (Default: Visual Editor) -->
+    <button id="mode-toggle-btn" class="tb-btn active-mode" onclick="toggleEditorMode()" title="Switch between Visual Editor and Markdown Workspace mode">✨ Mode: Visual Editor (WYSIWYG)</button>
+    <div class="sep"></div>
+
     <!-- Formatting Tools -->
     <button class="tb-btn" onclick="insertMarkdown('# ', '', 'Heading 1')" title="Heading 1">H1</button>
     <button class="tb-btn" onclick="insertMarkdown('## ', '', 'Heading 2')" title="Heading 2">H2</button>
@@ -706,9 +710,10 @@
     </div>
     <div class="pane" id="preview-pane">
         <div class="pane-header" id="label-preview-header">
-            <span class="pane-dot"></span> Rendered Preview (Read-Only)
+            <span class="pane-dot"></span> Rendered Preview
         </div>
-        <div id="preview" tabindex="0" aria-label="Rendered Markdown Preview"></div>
+        <!-- Contenteditable by default for visual editing -->
+        <div id="preview" tabindex="0" contenteditable="true" aria-label="Rendered Markdown Preview"></div>
     </div>
 </div>
 
@@ -750,36 +755,17 @@
     <div class="modal" style="max-width: 620px;">
         <h3>📖 MarkChrome Specification &amp; Help Documentation</h3>
         <div style="font-size: 0.83rem; line-height: 1.6; color: var(--text-light); margin: 12px 0; max-height: 380px; overflow-y: auto; padding-right: 8px;">
+            <p style="margin-bottom: 10px;"><b>Mode Switcher (Visual Editor vs. Markdown Workspace):</b></p>
+            <ul style="padding-left: 18px; margin-bottom: 12px;">
+                <li><b>Mode 2 (Visual Editor / WYSIWYG - Default):</b> Turns the preview pane into an editable surface where you can type and format visually, syncing changes back into clean Markdown.</li>
+                <li><b>Mode 1 (Markdown Workspace):</b> Standard dual-pane split view with live syntax parsing, Mermaid diagrams, KaTeX math, and source editing.</li>
+            </ul>
             <p style="margin-bottom: 10px;"><b>Universal Markdown Compatibility (95%+ Coverage):</b></p>
             <ul style="padding-left: 18px; margin-bottom: 12px;">
                 <li><b>CommonMark &amp; GFM:</b> Tables, task checklists (<code>- [x]</code>), strikethrough (<code>~~text~~</code>), auto-linking.</li>
                 <li><b>YAML Front Matter:</b> Front matter headers (<code>--- title: ... ---</code>) parsed and formatted for SSGs like Hugo, Jekyll, MkDocs.</li>
                 <li><b>Mermaid.js Diagrams:</b> Render flowcharts and sequence graphs directly via <code>```mermaid</code> code blocks.</li>
                 <li><b>KaTeX Math Typesetting:</b> Inline math (<code>$E=mc^2$</code>) and block formulas (<code>$$\int x dx$$</code>).</li>
-                <li><b>Reference Links &amp; Footnotes:</b> Full support for footnote markers (<code>[^1]</code>) and reference links (<code>[Ref][id]</code>).</li>
-                <li><b>Diagnostic Validator:</b> Scans for unclosed code blocks, unmatched asterisks, and broken markdown table borders.</li>
-            </ul>
-
-            <p style="margin-bottom: 10px;"><b>Keyboard Shortcuts &amp; Productivity Triggers:</b><br>
-            <kbd class="kbd-hint">Ctrl+S</kbd> Save &nbsp;|&nbsp; 
-            <kbd class="kbd-hint">Ctrl+F</kbd> Find &nbsp;|&nbsp; 
-            <kbd class="kbd-hint">Ctrl+B</kbd> Bold &nbsp;|&nbsp; 
-            <kbd class="kbd-hint">Ctrl+I</kbd> Italic &nbsp;|&nbsp; 
-            <kbd class="kbd-hint">Ctrl+K</kbd> Link &nbsp;|&nbsp;
-            <kbd class="kbd-hint">Esc</kbd> Zen Mode<br>
-            <i>Shortcodes:</i> Type <code>//date</code> or <code>//table</code> followed by Space to insert snippets.</p>
-
-            <hr style="border: none; border-top: 1px solid var(--border); margin: 16px 0;">
-
-            <h4 style="color: var(--text-bright); margin-bottom: 8px;">MarkChrome Guide &amp; Cheat Sheet</h4>
-            <ul style="padding-left: 18px; line-height: 1.8;">
-                <li><code># H1</code> / <code>## H2</code> / <code>### H3</code> — Headings</li>
-                <li><b>Bold</b> | <i>Italic</i> | <s>Strikethrough</s> | <mark>==Highlight==</mark></li>
-                <li><code>[Link Text](https://...)</code> | <code>![Alt](image-url)</code></li>
-                <li><code>- [ ] Task item</code> | <code>- Bullet item</code> | <code>1. Numbered item</code></li>
-                <li><code>| Header 1 | Header 2 |</code> — Tables</li>
-                <li><code>&gt; Blockquote</code> | <code>--- Horizontal Rule</code></li>
-                <li><code>`code`</code> (inline) | <code>```code block```</code> (multi-line)</li>
             </ul>
         </div>
         <div class="modal-buttons">
@@ -804,26 +790,32 @@ const toastEl    = document.getElementById('toast');
 const srAnnouncer= document.getElementById('sr-announcer');
 const tocSidebar = document.getElementById('toc-sidebar');
 const tocList    = document.getElementById('toc-list');
+const modeToggleBtn = document.getElementById('mode-toggle-btn');
 
 let fileHandle      = null;
 let currentFileName = 'markchrome.md';
 let isDirty         = false;
 let renderTimer     = null;
 let isScrolling     = false;
+let tocJumpLock     = false;
 let currentThemeState = 0; // 0: Dark, 1: Light, 2: High Contrast
+let isWysiwygMode   = true;  // Mode 2: Visual Editor (WYSIWYG) set as Default
+let isUpdating      = false;
+let lastActivePane  = 'preview';
+let savedPreviewRange = null;
 
 const translations = {
     en: {
         outline: "Outline", lines: "Lines", words: "Words", chars: "Chars",
         find: "Find:", replace: "Replace:", findNext: "Find Next", btnReplace: "Replace",
         replaceAll: "Replace All", dragHint: "Drag & Drop Supported (.md, .txt) | Paste Screenshots Direct",
-        editorHeader: "Markdown Source Editor (CommonMark & GFM)", previewHeader: "Rendered Preview (Read-Only)"
+        editorHeader: "Markdown Source Editor (CommonMark & GFM)", previewHeader: "Rendered Preview"
     },
     es: {
         outline: "Esquema", lines: "Líneas", words: "Palabras", chars: "Caracteres",
         find: "Buscar:", replace: "Reemplazar:", findNext: "Siguiente", btnReplace: "Reemplazar",
         replaceAll: "Reemplazar Todo", dragHint: "Arrastrar y soltar compatible (.md, .txt) | Pegar capturas",
-        editorHeader: "Editor Fuente Markdown (CommonMark y GFM)", previewHeader: "Vista Previa Renders (Solo Lectura)"
+        editorHeader: "Editor Fuente Markdown (CommonMark y GFM)", previewHeader: "Vista Previa Renders"
     },
     ur: {
         outline: "خاکہ", lines: "سطور", words: "الفاظ", chars: "حروف",
@@ -910,12 +902,138 @@ function renderMarkdown(fullText) {
 
     if (typeof DOMPurify !== 'undefined' && typeof DOMPurify.sanitize === 'function') {
         return DOMPurify.sanitize(metaHtml + rawHtml, {
-            ADD_TAGS: ['iframe'],
-            ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling']
+            ADD_TAGS: ['iframe', 'input'],
+            ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling', 'type', 'checked', 'disabled']
         });
     }
 
     return metaHtml + rawHtml;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   MODE SWITCHER: Mode 2 (Visual WYSIWYG) <-> Mode 1 (Markdown Workspace)
+───────────────────────────────────────────────────────────────── */
+function toggleEditorMode() {
+    isWysiwygMode = !isWysiwygMode;
+    if (isWysiwygMode) {
+        modeToggleBtn.textContent = '✨ Mode: Visual Editor (WYSIWYG)';
+        modeToggleBtn.classList.add('active-mode');
+        preview.setAttribute('contenteditable', 'true');
+        showToast('✨ Switched to Mode 2: Visual Editor (WYSIWYG enabled)');
+    } else {
+        modeToggleBtn.textContent = '📝 Mode: Markdown Workspace';
+        modeToggleBtn.classList.remove('active-mode');
+        preview.setAttribute('contenteditable', 'false');
+        updatePreviewAndPostProcess();
+        showToast('📝 Switched to Mode 1: Markdown Workspace');
+    }
+}
+
+/* Bi-directional HTML to Markdown parser for Visual Editor mode */
+function htmlToMarkdown(html) {
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    const buf = [];
+
+    function walk(node) {
+        if (node.nodeType === Node.TEXT_NODE) {
+            buf.push(node.textContent);
+            return;
+        }
+        if (node.nodeType !== Node.ELEMENT_NODE) return;
+        if (node.classList && node.classList.contains('front-matter-box')) return;
+
+        const tag = node.nodeName;
+        switch (tag) {
+            case 'H1': buf.push('\n# '   + innerText(node) + '\n\n'); return;
+            case 'H2': buf.push('\n## '  + innerText(node) + '\n\n'); return;
+            case 'H3': buf.push('\n### ' + innerText(node) + '\n\n'); return;
+            case 'H4': buf.push('\n#### '+ innerText(node) + '\n\n'); return;
+            case 'STRONG': case 'B': buf.push('**' + innerText(node) + '**'); return;
+            case 'EM':    case 'I': buf.push('*'  + innerText(node) + '*');  return;
+            case 'DEL':  buf.push('~~' + innerText(node) + '~~'); return;
+            case 'MARK': buf.push('==' + innerText(node) + '=='); return;
+            case 'CODE':
+                if (node.closest('pre')) { buf.push(node.textContent); return; }
+                buf.push('`' + node.textContent + '`'); return;
+            case 'PRE': {
+                const lang = (node.querySelector('code')?.className || '').replace('language-', '');
+                buf.push('\n```' + lang + '\n' + (node.querySelector('code')?.textContent || node.textContent).trim() + '\n```\n\n');
+                return;
+            }
+            case 'A':   buf.push('[' + innerText(node) + '](' + node.href + ')'); return;
+            case 'IMG': buf.push('![' + (node.alt || '') + '](' + node.src + ')'); return;
+            case 'HR':  buf.push('\n---\n\n'); return;
+            case 'BR':  buf.push('\n'); return;
+            case 'P':   {
+                const t = innerText(node).trim();
+                if (t) buf.push(t + '\n\n');
+                return;
+            }
+            case 'BLOCKQUOTE': {
+                const lines = innerText(node).trim().split('\n');
+                buf.push(lines.map(l => '> ' + l).join('\n') + '\n\n');
+                return;
+            }
+            case 'UL': {
+                Array.from(node.children).forEach(li => {
+                    const cb = li.querySelector('input[type="checkbox"]');
+                    if (cb) {
+                        buf.push('- [' + (cb.checked ? 'x' : ' ') + '] ' + li.textContent.replace(/^\s*/, '') + '\n');
+                    } else {
+                        buf.push('- ' + innerText(li).trim() + '\n');
+                    }
+                });
+                buf.push('\n');
+                return;
+            }
+            case 'OL': {
+                Array.from(node.children).forEach((li, i) => {
+                    buf.push((i + 1) + '. ' + innerText(li).trim() + '\n');
+                });
+                buf.push('\n');
+                return;
+            }
+            case 'TABLE': {
+                const ths = Array.from(node.querySelectorAll('thead th, thead td'));
+                if (ths.length) {
+                    buf.push('| ' + ths.map(th => innerText(th).trim()).join(' | ') + ' |\n');
+                    buf.push('| ' + ths.map(() => '---').join(' | ') + ' |\n');
+                }
+                node.querySelectorAll('tbody tr').forEach(tr => {
+                    const tds = Array.from(tr.querySelectorAll('td, th'));
+                    buf.push('| ' + tds.map(td => innerText(td).trim()).join(' | ') + ' |\n');
+                });
+                buf.push('\n');
+                return;
+            }
+        }
+        node.childNodes.forEach(walk);
+    }
+
+    function innerText(node) {
+        const parts = [];
+        node.childNodes.forEach(child => {
+            if (child.nodeType === Node.TEXT_NODE) {
+                parts.push(child.textContent);
+            } else if (child.nodeType === Node.ELEMENT_NODE) {
+                const t = child.nodeName;
+                const inner = innerText(child);
+                if      (t === 'STRONG' || t === 'B')  parts.push('**' + inner + '**');
+                else if (t === 'EM'    || t === 'I')   parts.push('*'  + inner + '*');
+                else if (t === 'DEL')                  parts.push('~~' + inner + '~~');
+                else if (t === 'MARK')                 parts.push('==' + inner + '==');
+                else if (t === 'CODE')                 parts.push('`'  + inner + '`');
+                else if (t === 'A')                    parts.push('[' + inner + '](' + child.href + ')');
+                else if (t === 'BR')                   parts.push('\n');
+                else parts.push(inner);
+            }
+        });
+        return parts.join('');
+    }
+
+    walk(div);
+    return buf.join('').trim();
 }
 
 function generateOutlineTOC() {
@@ -936,8 +1054,6 @@ function generateOutlineTOC() {
     });
 }
 
-
-// Source line numbers of h1-h3 headings (skips fenced code blocks, front matter)
 function getSourceHeadingLines() {
     const lines = editor.value.split('\n');
     const out = [];
@@ -956,28 +1072,22 @@ function getSourceHeadingLines() {
     return out;
 }
 
-let tocJumpLock = false;
 function jumpToHeading(h, idx) {
     const isMobile = window.innerWidth <= 768;
-    // Block the two-way scroll sync, otherwise it drags the panes back
     tocJumpLock = true;
     isScrolling = true;
 
-    // Close the outline first on mobile so it is not covering the content
     if (isMobile && !tocSidebar.classList.contains('collapsed')) toggleTocSidebar();
 
     const doScroll = () => {
-        // On mobile the panes are stacked and the page itself scrolls: bring the preview into view
         if (isMobile) {
             const pane = document.getElementById('preview-pane');
             const r = pane.getBoundingClientRect();
             if (r.top < 0 || r.bottom > window.innerHeight) pane.scrollIntoView({ block: 'start', behavior: 'auto' });
         }
-        // Scroll the preview container itself
         const top = h.getBoundingClientRect().top - preview.getBoundingClientRect().top + preview.scrollTop - 12;
         preview.scrollTop = Math.max(0, top);
 
-        // Scroll the editor to the matching source line
         const srcLines = getSourceHeadingLines();
         if (srcLines[idx] !== undefined) {
             const lh = parseFloat(getComputedStyle(editor).lineHeight) || 24;
@@ -985,12 +1095,12 @@ function jumpToHeading(h, idx) {
         }
     };
 
-    // Run after the sidebar closes and layout settles (mobile browsers need this)
     requestAnimationFrame(() => { doScroll(); setTimeout(doScroll, 60); });
     setTimeout(() => { tocJumpLock = false; isScrolling = false; }, 500);
 }
 
 function updatePreviewAndPostProcess() {
+    if (isWysiwygMode && isUpdating) return;
     preview.innerHTML = renderMarkdown(editor.value);
     generateOutlineTOC();
 
@@ -1164,10 +1274,14 @@ function syncScroll(source, target) {
     });
 }
 
-editor.addEventListener('scroll',  () => syncScroll(editor, preview));
-preview.addEventListener('scroll', () => syncScroll(preview, editor));
+editor.addEventListener('scroll',  () => { if (lastActivePane === 'editor') syncScroll(editor, preview); });
+preview.addEventListener('scroll', () => { if (lastActivePane === 'preview') syncScroll(preview, editor); });
+
+editor.addEventListener('focus',   () => lastActivePane = 'editor');
+preview.addEventListener('focus',  () => lastActivePane = 'preview');
 
 editor.addEventListener('input', () => {
+    if (isUpdating) return;
     markDirty();
     updateStats();
 
@@ -1187,6 +1301,16 @@ editor.addEventListener('input', () => {
     renderTimer = setTimeout(() => {
         updatePreviewAndPostProcess();
     }, 120);
+});
+
+/* Bi-directional synchronization when editing in Visual Editor Mode */
+preview.addEventListener('input', () => {
+    if (!isWysiwygMode || isUpdating) return;
+    markDirty();
+    isUpdating = true;
+    editor.value = htmlToMarkdown(preview.innerHTML);
+    updateStats();
+    isUpdating = false;
 });
 
 window.addEventListener('keydown', e => {
@@ -1217,6 +1341,10 @@ editor.addEventListener('keydown', e => {
 });
 
 function insertMarkdown(prefix, suffix, defaultText) {
+    if (isWysiwygMode) {
+        document.execCommand('bold', false, null);
+        return;
+    }
     editor.focus();
     const start = editor.selectionStart;
     const end = editor.selectionEnd;
@@ -1496,7 +1624,6 @@ async function saveMarkdownFileAs() {
     } catch (e) {}
 }
 
-// Rasterize a live mermaid <svg> to a PNG data URL (Word drops inline/data-URI SVG on paste)
 function svgToPng(svgEl, scale = 2) {
     return new Promise((resolve, reject) => {
         const rect = svgEl.getBoundingClientRect();
@@ -1512,7 +1639,6 @@ function svgToPng(svgEl, scale = 2) {
         c.setAttribute('width', w);
         c.setAttribute('height', h);
         c.style.maxWidth = 'none';
-        // foreignObject labels need XHTML namespace to render inside an <img>
         c.querySelectorAll('foreignObject > div, foreignObject > span').forEach(el => el.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml'));
 
         const svgString = new XMLSerializer().serializeToString(c);
@@ -1547,7 +1673,6 @@ async function copyFormattedRichText() {
             const liveSvg = liveNodes[i] && liveNodes[i].querySelector('svg');
             const node = cloneNodes[i];
             if (!liveSvg) {
-                // Diagram never rendered: keep its source so the section is not silently lost
                 const pre = document.createElement('pre');
                 pre.textContent = node.textContent;
                 node.replaceWith(pre);
@@ -1566,7 +1691,6 @@ async function copyFormattedRichText() {
                 node.style.textAlign = 'center';
                 node.appendChild(img);
             } catch (e) {
-                console.warn('Diagram rasterize failed:', e);
                 failed++;
                 const svgString = new XMLSerializer().serializeToString(liveSvg);
                 const img = document.createElement('img');
@@ -1576,7 +1700,6 @@ async function copyFormattedRichText() {
             }
         }
 
-        // Remove UI-only bits (Copy buttons on code blocks)
         cloneContainer.querySelectorAll('.copy-code-btn').forEach(el => el.remove());
 
         const html = '<html><body>' + cloneContainer.innerHTML + '</body></html>';
@@ -1648,82 +1771,26 @@ function exportPdfDocument() {
 const markchromeDocument = `---
 title: MarkChrome Universal Markdown Workspace
 author: Technical Writer / AI Assistant
-tags: [markdown, commonmark, gfm, latex, mermaid]
+tags: [markdown, commonmark, gfm, latex, mermaid, wysiwyg]
 ---
 
 # Welcome to MarkChrome
 
-MarkChrome is a fast, free browser-based Markdown workspace. Edit text with live rendering, preview diagrams and math instantly, validate formatting structure, and export clean HTML or PDF files easily.
+MarkChrome is set to **Visual Editor (WYSIWYG)** by default. Click and edit directly on this pane just like Microsoft Word!
 
 ### Key Features (For Laymen)
 
-* **What You See Is What You Get:** Instant side-by-side preview shows your formatted document as you type.
-* **Smart File Manager:** Open, edit, and save \`.md\` or \`.txt\` files directly on your computer, or drop files straight into the workspace.
-* **Auto-Save Protection:** Automatically back up your work so you never lose unsaved changes if you close the tab.
-* **One-Click Exports:** Easily turn your Markdown notes into ready-to-share web pages (\`HTML\`) or documents (\`PDF\`).
-* **Built-in Quality Checker:** A quick diagnostic tool finds broken formatting before you publish or share.
-
-### Key Features (For Technical Audience)
-
-* **95%+ Universal Syntax Support:** Full CommonMark and GitHub Flavored Markdown (GFM) parsing, including tables, task lists, strikethrough, and autolinks.
-* **Diagrams & Math Engine:** Native live rendering of **Mermaid.js** diagrams (flowcharts, sequence charts) and **KaTeX** equations (\`$\` and \`$$\`).
-* **YAML Front Matter Support:** Parses and displays metadata blocks (\`---\`) for SSGs like Hugo, Jekyll, Docusaurus, and MkDocs.
-* **Diagnostic Linter:** Scans source code for unclosed code block fences, mismatched delimiter formatting, and malformed table syntax.
-* **Zero-Server Client Architecture:** Runs 100% in-browser with HTML5 File System Access APIs, syntax highlighting (Prism.js), and zero data transmission.
+* **Mode Switcher:** Defaulted to Mode 2 (Visual Editor), with instant toggling to Mode 1 (Markdown Workspace) if raw code inspection is needed.
+* **Smart File Manager:** Open, edit, and save \`.md\` or \`.txt\` files directly on your computer.
+* **One-Click Exports:** Turn your notes into ready-to-share web pages (\`HTML\`) or documents (\`PDF\`).
 
 ---
 
 # Extended Markdown Showcase
 
-Write **Markdown** in the left pane — the live preview updates instantly with syntax highlighting, math, and diagram support.
+Write **Markdown** in the left pane or edit visually on this preview pane.
 
-
-## Features Showcase
-
-### 1. Formatting & Inline Elements
-* **Bold text:** \`**bold**\` or \`__bold__\`
-* *Italic text:* \`*italic*\` or \`_italic_\`
-* ~~Strikethrough:~~ \`~~strikethrough~~\`
-* ==Highlighted text:== \`==highlighted==\`
-* Inline code: \`code snippet\`
-
----
-
-### 2. Task Lists & Checklists
-- [x] Integrate Marked.js & DOMPurify
-- [x] Add Syntax Highlighting with Prism.js
-- [x] Render Diagrams using Mermaid.js
-- [x] Add Math formula support with KaTeX
-- [ ] Implement live collaboration mode
-
----
-
-### 3. Data Tables
-
-| Feature       | Status     | Performance |
-| :------------ | :--------: | ----------: |
-| Live Preview  | ✅ Ready   |    < 120ms  |
-| Code Sync     | ✅ Active  |      Instant |
-| Math & Graphs | ✅ Enabled |     On-Demand|
-
----
-
-### 4. Code Blocks with Syntax Highlighting
-
-\`\`\`javascript
-// Interactive JavaScript Example
-function greetUser(name) {
-    const greeting = \`Hello, \${name}!\`;
-    console.log(greeting);
-    return greeting;
-}
-
-greetUser("MarkChrome User");
-\`\`\`
-
----
-
-### 5. Math Equations (KaTeX)
+### 1. Math Equations (KaTeX)
 
 When $a \\ne 0$, there are two solutions to $ax^2 + bx + c = 0$:
 
@@ -1731,22 +1798,14 @@ $$x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}$$
 
 ---
 
-### 6. Architectural Diagrams (Mermaid)
+### 2. Architectural Diagrams (Mermaid)
 
 \`\`\`mermaid
 graph TD;
     A[Markdown Source] --> B(Marked.js Parser);
     B --> C{DOMPurify Sanitizer};
     C --> D[Rendered Preview];
-    D --> E[Prism Syntax Highlighting];
-    D --> F[KaTeX Math Engine];
 \`\`\`
-
----
-
-### 7. Blockquotes & Callouts
-
-> **Pro Tip:** You can drop any \`.md\` or \`.txt\` file directly into the workspace pane to open it instantly!
 `;
 
 const savedDraft = localStorage.getItem('markchrome_draft');
