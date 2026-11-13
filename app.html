@@ -951,7 +951,7 @@ function htmlToMarkdown(html) {
             case 'H4': buf.push('\n#### '+ innerText(node) + '\n\n'); return;
             case 'STRONG': case 'B': buf.push('**' + innerText(node) + '**'); return;
             case 'EM':    case 'I': buf.push('*'  + innerText(node) + '*');  return;
-            case 'DEL':  buf.push('~~' + innerText(node) + '~~'); return;
+            case 'DEL': case 'STRIKE': case 'S': buf.push('~~' + innerText(node) + '~~'); return;
             case 'MARK': buf.push('==' + innerText(node) + '=='); return;
             case 'CODE':
                 if (node.closest('pre')) { buf.push(node.textContent); return; }
@@ -965,6 +965,13 @@ function htmlToMarkdown(html) {
             case 'IMG': buf.push('![' + (node.alt || '') + '](' + node.src + ')'); return;
             case 'HR':  buf.push('\n---\n\n'); return;
             case 'BR':  buf.push('\n'); return;
+            case 'DIV': {
+                // plain <div> lines created by the browser's Enter key -> treat as paragraphs
+                if (node.className || node.querySelector('h1,h2,h3,h4,p,ul,ol,pre,table,blockquote,div')) break;
+                const t = innerText(node).trim();
+                if (t) buf.push(t + '\n\n');
+                return;
+            }
             case 'P':   {
                 const t = innerText(node).trim();
                 if (t) buf.push(t + '\n\n');
@@ -1021,7 +1028,7 @@ function htmlToMarkdown(html) {
                 const inner = innerText(child);
                 if      (t === 'STRONG' || t === 'B')  parts.push('**' + inner + '**');
                 else if (t === 'EM'    || t === 'I')   parts.push('*'  + inner + '*');
-                else if (t === 'DEL')                  parts.push('~~' + inner + '~~');
+                else if (t === 'DEL' || t === 'STRIKE' || t === 'S') parts.push('~~' + inner + '~~');
                 else if (t === 'MARK')                 parts.push('==' + inner + '==');
                 else if (t === 'CODE')                 parts.push('`'  + inner + '`');
                 else if (t === 'A')                    parts.push('[' + inner + '](' + child.href + ')');
@@ -1303,6 +1310,17 @@ editor.addEventListener('input', () => {
     }, 120);
 });
 
+try { document.execCommand('defaultParagraphSeparator', false, 'p'); } catch (e) {}
+
+// Shortcuts that the browser would otherwise handle itself while typing in the Visual Editor
+preview.addEventListener('keydown', e => {
+    if (!isWysiwygMode || !(e.ctrlKey || e.metaKey)) return;
+    const k = e.key.toLowerCase();
+    if      (k === 's')             { e.preventDefault(); saveMarkdownFile(); }
+    else if (k === 'k')             { e.preventDefault(); openLinkModal(); }
+    else if (k === 'f' || k === 'h') { e.preventDefault(); toggleFindReplaceBar(); }
+});
+
 /* Bi-directional synchronization when editing in Visual Editor Mode */
 preview.addEventListener('input', () => {
     if (!isWysiwygMode || isUpdating) return;
@@ -1340,25 +1358,338 @@ editor.addEventListener('keydown', e => {
     }
 });
 
-function insertMarkdown(prefix, suffix, defaultText) {
-    if (isWysiwygMode) {
-        document.execCommand('bold', false, null);
+/* ─────────────────────────────────────────────────────────────────
+   VISUAL EDITOR (WYSIWYG) TOOLBAR SUPPORT
+───────────────────────────────────────────────────────────────── */
+let savedRange = null;   // last caret/selection inside the preview pane
+
+document.addEventListener('selectionchange', () => {
+    const s = window.getSelection();
+    if (s.rangeCount && s.anchorNode && preview.contains(s.anchorNode)) {
+        savedRange = s.getRangeAt(0).cloneRange();
+    }
+});
+
+// Clicking a toolbar button must NOT steal focus/selection from the preview pane
+document.addEventListener('mousedown', e => {
+    if (e.target.closest && e.target.closest('.tb-btn')) e.preventDefault();
+});
+
+function escHtml(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function focusPreviewSelection() {
+    preview.focus();
+    const s = window.getSelection();
+    if (!(s.rangeCount && s.anchorNode && preview.contains(s.anchorNode))) {
+        s.removeAllRanges();
+        if (savedRange) {
+            s.addRange(savedRange);
+        } else {
+            const r = document.createRange();
+            r.selectNodeContents(preview);
+            r.collapse(false);
+            s.addRange(r);
+        }
+    }
+    return s;
+}
+
+function syncPreviewToEditor() {
+    preview.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
+function wysiwygInsertHtml(html) {
+    focusPreviewSelection();
+    document.execCommand('insertHTML', false, html);
+    syncPreviewToEditor();
+}
+
+function closestInPreview(tagName) {
+    const s = window.getSelection();
+    let n = s.anchorNode;
+    while (n && n !== preview) {
+        if (n.nodeType === 1 && n.nodeName === tagName) return n;
+        n = n.parentNode;
+    }
+    return null;
+}
+
+function currentBlockTag() {
+    const s = window.getSelection();
+    let n = s.anchorNode;
+    while (n && n !== preview) {
+        if (n.nodeType === 1 && /^(H[1-6]|P|BLOCKQUOTE|PRE|LI)$/.test(n.nodeName)) return n.nodeName;
+        n = n.parentNode;
+    }
+    return null;
+}
+
+// Wrap the selection (or a placeholder) in an element by editing the DOM directly.
+// (execCommand('insertHTML') makes Chrome swap <mark>/<code> for styled <span>s.)
+function wrapSelection(tag, text) {
+    const s = window.getSelection();
+    const r = s.getRangeAt(0);
+    const el = document.createElement(tag);
+    if (r.collapsed) el.textContent = text;
+    else el.appendChild(r.extractContents());
+    r.insertNode(el);
+    const nr = document.createRange();
+    nr.selectNodeContents(el);
+    s.removeAllRanges();
+    s.addRange(nr);
+}
+
+function toggleInline(tagName, tag, text, selected) {
+    const existing = closestInPreview(tagName);
+    if (existing && !existing.closest('pre')) {          // already formatted -> remove it
+        const parent = existing.parentNode;
+        const first = existing.firstChild, last = existing.lastChild;
+        while (existing.firstChild) parent.insertBefore(existing.firstChild, existing);
+        parent.removeChild(existing);
+        if (first && last) {
+            const r = document.createRange();
+            r.setStartBefore(first);
+            r.setEndAfter(last);
+            const s = window.getSelection();
+            s.removeAllRanges();
+            s.addRange(r);
+        }
+    } else {
+        wrapSelection(tag, text);
+    }
+}
+
+function wysiwygFormat(prefix, suffix, defaultText) {
+    const sel = focusPreviewSelection();
+    const selected = sel.toString();
+    const text = selected || defaultText;
+    const headings = { '# ': 'H1', '## ': 'H2', '### ': 'H3' };
+
+    if (headings[prefix]) {
+        const tag = headings[prefix];
+        document.execCommand('formatBlock', false, '<' + (currentBlockTag() === tag ? 'p' : tag.toLowerCase()) + '>');
+    } else if (prefix === '**') {
+        selected ? document.execCommand('bold') : toggleInline('STRONG', 'strong', text, selected);
+    } else if (prefix === '*') {
+        selected ? document.execCommand('italic') : toggleInline('EM', 'em', text, selected);
+    } else if (prefix === '~~') {
+        selected ? document.execCommand('strikethrough') : toggleInline('DEL', 'del', text, selected);
+    } else if (prefix === '==') {
+        toggleInline('MARK', 'mark', text, selected);
+    } else if (prefix === '`') {
+        toggleInline('CODE', 'code', text, selected);
+    } else if (prefix === '- ') {
+        document.execCommand('insertUnorderedList');
+    } else if (prefix === '1. ') {
+        document.execCommand('insertOrderedList');
+    } else if (prefix === '- [ ] ') {
+        document.execCommand('insertHTML', false, `<ul><li><input type="checkbox"> ${escHtml(text)}</li></ul>`);
+    } else if (prefix === '> ') {
+        if (currentBlockTag() === 'BLOCKQUOTE') document.execCommand('outdent');
+        else document.execCommand('formatBlock', false, '<blockquote>');
+    } else if (prefix.trim() === '---') {
+        document.execCommand('insertHorizontalRule');
+    } else if (prefix.startsWith('```')) {
+        const lang = (prefix.match(/^```(\w*)/) || [])[1] || '';
+        document.execCommand('insertHTML', false,
+            `<pre><code class="language-${lang}">${escHtml(text)}</code></pre><p><br></p>`);
+    } else {
+        document.execCommand('insertText', false, prefix + text + suffix);
+    }
+    syncPreviewToEditor();
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   MARKDOWN SOURCE EDITOR TOOLBAR SUPPORT
+───────────────────────────────────────────────────────────────── */
+let srcModalSel = null;   // selection in the source editor when a Link/Image box was opened
+
+// Replace editor text[start,end) with `text`, keep Ctrl+Z working, then set the selection
+function srcReplace(start, end, text, selStart, selEnd) {
+    editor.focus();
+    editor.setSelectionRange(start, end);
+    let ok = false;
+    try { ok = document.execCommand('insertText', false, text); } catch (e) {}
+    if (!ok || editor.value.substring(start, start + text.length) !== text) {
+        // fallback for browsers that refuse execCommand on a textarea
+        const v = editor.value;
+        if (!ok) {
+            editor.value = v.substring(0, start) + text + v.substring(end);
+            editor.dispatchEvent(new Event('input'));
+        }
+    }
+    editor.setSelectionRange(selStart, selEnd);
+}
+
+// Insert a stand-alone block (table, horizontal rule) after the current line
+function srcInsertBlock(block) {
+    const v = editor.value;
+    let pos = v.indexOf('\n', editor.selectionEnd);
+    if (pos === -1) pos = v.length;
+    const before = v.substring(0, pos), after = v.substring(pos);
+    let lead = '';
+    if (before.length) {
+        if (!before.endsWith('\n')) lead = '\n\n';
+        else if (!before.endsWith('\n\n')) lead = '\n';
+    }
+    const trail = after === '' ? '\n' : (after.startsWith('\n\n') ? '' : '\n');
+    const ins = lead + block + trail;
+    srcReplace(pos, pos, ins, pos + ins.length, pos + ins.length);
+}
+
+// Replace the selection saved when the Link/Image box opened
+function srcInsertAtSaved(text) {
+    const len = editor.value.length;
+    const sel = srcModalSel || { s: len, e: len };
+    srcReplace(sel.s, sel.e, text, sel.s + text.length, sel.s + text.length);
+    srcModalSel = null;
+}
+
+const SRC_LINE_KINDS = { '# ': 'h1', '## ': 'h2', '### ': 'h3', '- ': 'ul', '1. ': 'ol', '- [ ] ': 'task', '> ': 'quote' };
+const SRC_EXACT = {
+    h1:   l => /^# /.test(l),
+    h2:   l => /^## /.test(l),
+    h3:   l => /^### /.test(l),
+    ul:   l => /^[-*+] /.test(l) && !/^[-*+] \[[ xX]\] /.test(l),
+    ol:   l => /^\d+[.)] /.test(l),
+    task: l => /^[-*+] \[[ xX]\] /.test(l),
+    quote: l => /^> /.test(l)
+};
+const SRC_STRIP = {
+    heading: /^#{1,6}\s+/,
+    list:    /^(?:[-*+]\s+\[[ xX]\]\s+|[-*+]\s+|\d+[.)]\s+)/,
+    quote:   /^>\s?/
+};
+
+// Headings, lists, tasks, quotes: act on the START of every selected line, and toggle
+function srcLinePrefix(kind, prefix, defaultText) {
+    const v = editor.value;
+    const s = editor.selectionStart, e = editor.selectionEnd;
+    const ls = v.lastIndexOf('\n', s - 1) + 1;
+    const endRef = (e > s && v[e - 1] === '\n') ? e - 1 : e;
+    let le = v.indexOf('\n', endRef);
+    if (le === -1) le = v.length;
+    const lines = v.substring(ls, le).split('\n');
+    const group = kind[0] === 'h' ? 'heading' : (kind === 'quote' ? 'quote' : 'list');
+    const strip = SRC_STRIP[group];
+    const exact = SRC_EXACT[kind];
+    const nonEmpty = lines.filter(l => l.trim());
+
+    if (!nonEmpty.length) {                       // blank line: insert marker + placeholder
+        const text = prefix + defaultText;
+        srcReplace(ls, le, text, ls + prefix.length, ls + text.length);
         return;
     }
-    editor.focus();
-    const start = editor.selectionStart;
-    const end = editor.selectionEnd;
-    const selected = editor.value.substring(start, end) || defaultText;
-    const replacement = prefix + selected + suffix;
+    const allHave = nonEmpty.every(l => exact(l.trimStart()));
+    let n = 0;
+    const out = lines.map(l => {
+        if (!l.trim()) return l;
+        const indent = l.match(/^\s*/)[0];
+        let rest = l.slice(indent.length);
+        if (allHave) return indent + rest.replace(strip, '');
+        rest = rest.replace(strip, '');
+        n++;
+        return indent + (kind === 'ol' ? n + '. ' : prefix) + rest;
+    });
+    const block = out.join('\n');
+    let ns, ne;
+    if (lines.length > 1) { ns = ls; ne = ls + block.length; }
+    else {
+        const d = out[0].length - lines[0].length;
+        ns = Math.max(ls, s + d);
+        ne = Math.max(ns, e + d);
+    }
+    srcReplace(ls, le, block, ns, ne);
+}
 
-    editor.value = editor.value.substring(0, start) + replacement + editor.value.substring(end);
-    editor.dispatchEvent(new Event('input'));
-    editor.setSelectionRange(start + prefix.length, start + prefix.length + selected.length);
+// Bold / italic / strike / highlight / inline code: wrap, or unwrap if already wrapped
+function srcInline(prefix, suffix, defaultText) {
+    const v = editor.value;
+    let s = editor.selectionStart;
+    const e = editor.selectionEnd;
+    // If the selection starts inside a line's heading/list/quote marker, start after the marker
+    if (e > s) {
+        const ls0 = v.lastIndexOf('\n', s - 1) + 1;
+        const head = (v.substring(ls0).match(/^[ \t]*(?:#{1,6}[ \t]+|>[ \t]?|[-*+][ \t]+(?:\[[ xX]\][ \t]+)?|\d+[.)][ \t]+)/) || [''])[0];
+        if (head && s < ls0 + head.length && e > ls0 + head.length) s = ls0 + head.length;
+    }
+    const sel = v.substring(s, e);
+    const L = prefix.length;
+    let wrapped = false, selHas = false;
+
+    if (s !== e) {
+        if (prefix === '*' || prefix === '**') {
+            let nb = 0, na = 0;
+            while (s - 1 - nb >= 0 && v[s - 1 - nb] === '*') nb++;
+            while (e + na < v.length && v[e + na] === '*') na++;
+            const lead = (sel.match(/^\*+/) || [''])[0].length;
+            const trail = (sel.match(/\*+$/) || [''])[0].length;
+            const inner = Math.min(lead, trail);
+            if (prefix === '*') {                  // italic = an odd run of asterisks
+                wrapped = Math.min(nb, na) % 2 === 1;
+                selHas  = !wrapped && lead < sel.length && inner % 2 === 1;
+            } else {                               // bold = a run of 2 or more
+                wrapped = nb >= 2 && na >= 2;
+                selHas  = !wrapped && lead < sel.length && inner >= 2;
+            }
+        } else {
+            wrapped = v.substring(s - L, s) === prefix && v.substring(e, e + L) === suffix;
+            selHas  = sel.length >= 2 * L && sel.startsWith(prefix) && sel.endsWith(suffix);
+        }
+    }
+    if (wrapped) {
+        srcReplace(s - L, e + L, sel, s - L, s - L + sel.length);
+    } else if (selHas) {
+        const inner = sel.substring(L, sel.length - L);
+        srcReplace(s, e, inner, s, s + inner.length);
+    } else {
+        const text = sel || defaultText;
+        srcReplace(s, e, prefix + text + suffix, s + L, s + L + text.length);
+    }
+}
+
+function srcFormat(prefix, suffix, defaultText) {
+    if (SRC_LINE_KINDS[prefix]) { srcLinePrefix(SRC_LINE_KINDS[prefix], prefix, defaultText); return; }
+    if (prefix.trim() === '---') { srcInsertBlock('---'); return; }
+    if (prefix.startsWith('```')) {                // fenced code block: wrap the selection on its own lines
+        const v = editor.value;
+        const s = editor.selectionStart, e = editor.selectionEnd;
+        const text = v.substring(s, e) || defaultText;
+        const lead  = (s > 0 && v[s - 1] !== '\n') ? '\n' : '';
+        const trail = (e < v.length && v[e] !== '\n') ? '\n' : '';
+        const ins = lead + prefix + text + suffix + trail;
+        const ts = s + lead.length + prefix.length;
+        srcReplace(s, e, ins, ts, ts + text.length);
+        return;
+    }
+    srcInline(prefix, suffix, defaultText);
+}
+
+function insertMarkdown(prefix, suffix, defaultText) {
+    if (isWysiwygMode) {
+        wysiwygFormat(prefix, suffix, defaultText);
+        return;
+    }
+    srcFormat(prefix, suffix, defaultText);
 }
 
 function insertTable() {
-    const tableText = '\n| Header 1 | Header 2 | Header 3 |\n| :--- | :---: | ---: |\n| Cell 1   | Cell 2   | Cell 3   |\n';
-    insertMarkdown(tableText, '', '');
+    if (isWysiwygMode) {
+        wysiwygInsertHtml(
+            '<table><thead><tr><th>Header 1</th><th>Header 2</th><th>Header 3</th></tr></thead>' +
+            '<tbody><tr><td>Cell 1</td><td>Cell 2</td><td>Cell 3</td></tr></tbody></table><p><br></p>');
+        return;
+    }
+    srcInsertBlock('| Header 1 | Header 2 | Header 3 |\n| :--- | :---: | ---: |\n| Cell 1   | Cell 2   | Cell 3   |');
+}
+
+function safeUrl(url, allowDataImage) {
+    const u = (url || '').trim();
+    if (/^\s*(javascript|vbscript):/i.test(u)) return '#';
+    if (/^data:/i.test(u) && !(allowDataImage && /^data:image\//i.test(u))) return '#';
+    return u || '#';
 }
 
 function openLinkModal() {
@@ -1369,12 +1700,27 @@ function openLinkModal() {
     document.getElementById('modal-label2').textContent = 'URL';
     document.getElementById('modal-input2').value = '';
     overlay.classList.add('open');
+    if (isWysiwygMode && savedRange && !savedRange.collapsed) {
+        document.getElementById('modal-input1').value = savedRange.toString();
+    }
+    if (!isWysiwygMode) {
+        srcModalSel = { s: editor.selectionStart, e: editor.selectionEnd };
+        const picked = editor.value.substring(srcModalSel.s, srcModalSel.e);
+        if (picked) document.getElementById('modal-input1').value = picked;
+    }
     setTimeout(() => document.getElementById('modal-input1').focus(), 50);
 
     document.getElementById('modal-confirm').onclick = () => {
         const text = document.getElementById('modal-input1').value || 'link';
         const url = document.getElementById('modal-input2').value || '#';
-        insertMarkdown(`[${text}](${url})`, '', '');
+        if (isWysiwygMode) {
+            const a = document.createElement('a');
+            a.href = safeUrl(url, false);
+            a.textContent = text;
+            wysiwygInsertHtml(a.outerHTML);
+        } else {
+            srcInsertAtSaved(`[${text}](${url})`);
+        }
         closeModal();
     };
 }
@@ -1387,12 +1733,24 @@ function openImageModal() {
     document.getElementById('modal-label2').textContent = 'Image URL';
     document.getElementById('modal-input2').value = '';
     overlay.classList.add('open');
+    if (!isWysiwygMode) {
+        srcModalSel = { s: editor.selectionStart, e: editor.selectionEnd };
+        const picked = editor.value.substring(srcModalSel.s, srcModalSel.e);
+        if (picked) document.getElementById('modal-input1').value = picked;
+    }
     setTimeout(() => document.getElementById('modal-input1').focus(), 50);
 
     document.getElementById('modal-confirm').onclick = () => {
         const alt = document.getElementById('modal-input1').value || 'image';
         const url = document.getElementById('modal-input2').value || '#';
-        insertMarkdown(`![${alt}](${url})`, '', '');
+        if (isWysiwygMode) {
+            const img = document.createElement('img');
+            img.src = safeUrl(url, true);
+            img.alt = alt;
+            wysiwygInsertHtml(img.outerHTML);
+        } else {
+            srcInsertAtSaved(`![${alt}](${url})`);
+        }
         closeModal();
     };
 }
